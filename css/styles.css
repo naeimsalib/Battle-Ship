@@ -49,6 +49,13 @@ html, body {
     cursor: pointer; /* Changes cursor on hover */
 }
 
+.place-btn {
+    padding: 10px 20px; /* Adds internal spacing */
+    border-radius: 15px;
+    font-size: 1rem; /* Sets button font size */
+    cursor: pointer; /* Changes cursor on hover */
+}
+
 /* Game Area Styles */
 .game-area {
     display: flex; /* Flexbox layout */

@@ -1,159 +1,144 @@
-============================
-1. Initialization Functions
-==============
+## Pseudocode: Battleship Game
 
-1.1 init()
-    - Initialize Player and AI grids as 10x10 arrays filled with "Empty"
-    - Initialize Player's ship inventory:
-        - 2 ships with 3 cells each
-        - 4 ships with 2 cells each
-    - Initialize AI's ship inventory:
-        - 2 ships with 3 cells each
-        - 4 ships with 2 cells each
-    - Set gameState = "Setup"
-    - Set turn = "Player"
-    - Set gameOver = False
-    - Call renderMainMenu()
-============================
-2. Rendering Functions
-============================
+### 1. Initialization Functions
+1̶.̶1̶ i̶n̶i̶t̶(̶)̶
+    -̶ D̶e̶s̶c̶r̶i̶p̶t̶i̶o̶n̶:̶ I̶n̶i̶t̶i̶a̶l̶i̶z̶e̶s̶ g̶a̶m̶e̶ v̶a̶r̶i̶a̶b̶l̶e̶s̶,̶ P̶l̶a̶y̶e̶r̶ a̶n̶d̶ A̶I̶ b̶o̶a̶r̶d̶s̶,̶ a̶n̶d̶ s̶e̶t̶s̶ u̶p̶ t̶h̶e̶ g̶a̶m̶e̶ s̶t̶a̶t̶e̶.̶
+    -̶ S̶t̶e̶p̶s̶:̶
+        1̶.̶ C̶r̶e̶a̶t̶e̶ e̶m̶p̶t̶y̶ 1̶0̶x̶1̶0̶ g̶r̶i̶d̶s̶ f̶o̶r̶ P̶l̶a̶y̶e̶r̶ a̶n̶d̶ A̶I̶.̶
+        2̶.̶ D̶e̶f̶i̶n̶e̶ P̶l̶a̶y̶e̶r̶'̶s̶ s̶h̶i̶p̶ i̶n̶v̶e̶n̶t̶o̶r̶y̶:̶
+            -̶ 2̶ s̶h̶i̶p̶s̶ o̶f̶ 3̶ c̶e̶l̶l̶s̶ e̶a̶c̶h̶.̶
+            -̶ 4̶ s̶h̶i̶p̶s̶ o̶f̶ 2̶ c̶e̶l̶l̶s̶ e̶a̶c̶h̶.̶
+        3̶.̶ D̶e̶f̶i̶n̶e̶ A̶I̶'̶s̶ s̶h̶i̶p̶ i̶n̶v̶e̶n̶t̶o̶r̶y̶:̶
+            -̶ 2̶ s̶h̶i̶p̶s̶ o̶f̶ 3̶ c̶e̶l̶l̶s̶ e̶a̶c̶h̶.̶
+            -̶ 4̶ s̶h̶i̶p̶s̶ o̶f̶ 2̶ c̶e̶l̶l̶s̶ e̶a̶c̶h̶.̶
+        4̶.̶ S̶e̶t̶ g̶a̶m̶e̶S̶t̶a̶t̶e̶ =̶ "̶S̶e̶t̶u̶p̶"̶.̶
+        5̶.̶ S̶e̶t̶ t̶u̶r̶n̶ =̶ "̶P̶l̶a̶y̶e̶r̶"̶.̶
+        6̶.̶ S̶e̶t̶ g̶a̶m̶e̶O̶v̶e̶r̶ =̶ f̶a̶l̶s̶e̶.̶
 
-2.1 renderMainMenu()
-    - Display "Welcome to Battleship"
-    - Display "Start Game" button
-    - Wait for "Start Game" button click
-    - If clicked:
-        - Call renderSetupScreen()
-        - Hide Main Menu
+---
+#̶#̶#̶ 2̶.̶ M̶o̶v̶e̶ S̶t̶a̶r̶t̶ m̶e̶n̶u̶ F̶u̶n̶c̶t̶i̶o̶n̶s̶
+2̶.̶1̶ m̶o̶v̶e̶S̶t̶a̶r̶t̶M̶e̶n̶u̶(̶)̶
+    -̶ D̶e̶s̶c̶r̶i̶p̶t̶i̶o̶n̶:̶ H̶i̶d̶e̶s̶ t̶h̶e̶ m̶a̶i̶n̶ m̶e̶n̶u̶ a̶n̶d̶ b̶e̶g̶i̶n̶s̶ g̶a̶m̶e̶ s̶e̶t̶u̶p̶ a̶f̶t̶e̶r̶ s̶t̶a̶r̶t̶ b̶u̶t̶t̶o̶n̶ i̶s̶ c̶l̶i̶c̶k̶e̶d̶
+    -̶ S̶t̶e̶p̶s̶:̶
+        1̶.̶ H̶i̶d̶e̶ t̶h̶e̶ m̶a̶i̶n̶ m̶e̶n̶u̶ b̶y̶ m̶o̶v̶i̶n̶g̶ i̶t̶ o̶f̶f̶-̶s̶c̶r̶e̶e̶n̶.̶
+        2̶.̶ M̶a̶k̶e̶ t̶h̶e̶ g̶a̶m̶e̶ a̶r̶e̶a̶ v̶i̶s̶i̶b̶l̶e̶.̶
+        3̶.̶ C̶a̶l̶l̶ g̶e̶n̶e̶r̶a̶t̶e̶B̶o̶a̶r̶d̶(̶"̶p̶l̶a̶y̶e̶r̶-̶b̶o̶a̶r̶d̶"̶)̶ t̶o̶ c̶r̶e̶a̶t̶e̶ t̶h̶e̶ P̶l̶a̶y̶e̶r̶'̶s̶ b̶o̶a̶r̶d̶.̶
+        4̶.̶ C̶a̶l̶l̶ g̶e̶n̶e̶r̶a̶t̶e̶B̶o̶a̶r̶d̶(̶"̶c̶o̶m̶p̶u̶t̶e̶r̶-̶b̶o̶a̶r̶d̶"̶)̶ t̶o̶ c̶r̶e̶a̶t̶e̶ t̶h̶e̶ A̶I̶'̶s̶ b̶o̶a̶r̶d̶.̶
+        5̶.̶ D̶e̶s̶c̶r̶i̶p̶t̶i̶o̶n̶:̶ D̶i̶s̶p̶l̶a̶y̶s̶ b̶o̶t̶h̶ g̶r̶i̶d̶s̶ f̶o̶r̶ g̶a̶m̶e̶p̶l̶a̶y̶.̶
 
-2.2 renderSetupScreen()
-    - Display empty 10x10 Player grid
-    - Display Player's ship inventory
-    - Allow Player to drag and drop ships onto the grid
-    - Display "Start" button
-    - Wait for "Start" button click
-    - If all ships are placed correctly:
-        - Call placeAIShips()
-        - Call renderGameplayScreen()
-    - Else:
-        - Display error message
+---
 
-2.3 renderGameplayScreen()
-    - Display AI's grid (only hits and misses visible)
-    - Display Player's grid (fully visible)
-    - Display whose turn it is (Player/AI)
-    - If gameOver = True:
-        - Call renderGameOverScreen()
+#̶#̶#̶ 3̶.̶ B̶o̶a̶r̶d̶ G̶e̶n̶e̶r̶a̶t̶i̶o̶n̶ f̶u̶n̶c̶t̶i̶o̶n̶
+3̶.̶1̶ g̶e̶n̶e̶r̶a̶t̶e̶B̶o̶a̶r̶d̶(̶b̶o̶a̶r̶d̶I̶d̶)̶
+    -̶ D̶e̶s̶c̶r̶i̶p̶t̶i̶o̶n̶:̶ D̶y̶n̶a̶m̶i̶c̶a̶l̶l̶y̶ g̶e̶n̶e̶r̶a̶t̶e̶s̶ a̶ 1̶0̶x̶1̶0̶ g̶r̶i̶d̶ o̶f̶ c̶e̶l̶l̶s̶ f̶o̶r̶ t̶h̶e̶ s̶p̶e̶c̶i̶f̶i̶e̶d̶ b̶o̶a̶r̶d̶.̶
+    -̶ S̶t̶e̶p̶s̶:̶
+        1̶.̶ S̶e̶l̶e̶c̶t̶ t̶h̶e̶ c̶o̶n̶t̶a̶i̶n̶e̶r̶ f̶o̶r̶ t̶h̶e̶ s̶p̶e̶c̶i̶f̶i̶e̶d̶ b̶o̶a̶r̶d̶I̶d̶.̶
+        2̶.̶ C̶l̶e̶a̶r̶ a̶n̶y̶ e̶x̶i̶s̶t̶i̶n̶g̶ c̶e̶l̶l̶s̶ i̶n̶ t̶h̶e̶ c̶o̶n̶t̶a̶i̶n̶e̶r̶.̶
+        3̶.̶ C̶r̶e̶a̶t̶e̶ a̶ 1̶0̶x̶1̶0̶ g̶r̶i̶d̶ o̶f̶ c̶e̶l̶l̶s̶:̶
+            -̶ A̶s̶s̶i̶g̶n̶ u̶n̶i̶q̶u̶e̶ I̶D̶s̶ t̶o̶ e̶a̶c̶h̶ c̶e̶l̶l̶.̶
+            -̶ A̶d̶d̶ a̶ c̶l̶i̶c̶k̶ l̶i̶s̶t̶e̶n̶e̶r̶ t̶o̶ e̶a̶c̶h̶ c̶e̶l̶l̶.̶
+                -̶ L̶o̶g̶ t̶h̶e̶ c̶e̶l̶l̶ I̶D̶ a̶n̶d̶ b̶o̶a̶r̶d̶ t̶y̶p̶e̶ w̶h̶e̶n̶ c̶l̶i̶c̶k̶e̶d̶.̶
+                -̶ H̶i̶g̶h̶l̶i̶g̶h̶t̶ t̶h̶e̶ c̶l̶i̶c̶k̶e̶d̶ c̶e̶l̶l̶.̶
+        4̶.̶ A̶p̶p̶e̶n̶d̶ t̶h̶e̶ c̶e̶l̶l̶s̶ t̶o̶ t̶h̶e̶ b̶o̶a̶r̶d̶ c̶o̶n̶t̶a̶i̶n̶e̶r̶.̶
 
-2.4 renderGameOverScreen()
-    - If all Player's ships are sunk:
-        - Display "AI Wins!"
-    - If all AI's ships are sunk:
-        - Display "Player Wins!"
-    - Display "Restart" button
-    - Wait for "Restart" button click
-    - If clicked:
-        - Call initGame()
-
-============================
-3. Core Game Functions
-============================
-
-3.1 placeAIShips()
-    - For each ship in AI's inventory:
-        - Randomly Select a ship to place
-        - Randomly select a starting cell
-        - Randomly select a direction (horizontal/vertical)
-        - Check if the ship can fit without overlapping or going out of bounds
-        - If valid:
-            - Place the ship on the AI grid
-        - Else:
-            - Retry
 
 3.2 handlePlayerTurn()
-    - Wait for Player to click a cell on AI's grid
-    - If the cell is already attacked:
-        - Do nothing
-    - Else:
-        - If the cell contains a ship:
-            - Mark cell as "Hit"
-            - Check if the ship is sunk (By hitting all Cells)
-        - Else:
-            - Mark cell as "Miss" (and change it's color)
-        - Call checkGameOver()
-        - If gameOver = False:
-            - Set turn = "AI"
-            - Call handleAITurn()
+    - Description: Handles the Player's turn and updates the game state.
+    - Steps:
+        1. Wait for the Player to click a cell on the AI's grid.
+        2. If the cell is already attacked:
+            - Do nothing.
+        3. If the cell contains a ship:
+            - Mark the cell as "Hit".
+            - Check if the ship is sunk.
+        4. If the cell does not contain a ship:
+            - Mark the cell as "Miss".
+        5. Call checkGameOver().
+        6. If gameOver = false:
+            - Set turn = "AI".
+            - Call handleAITurn().
 
 3.3 handleAITurn()
-    - Select a cell using AILogic()
-    - If the cell contains a ship:
-        - Mark cell as "Hit"
-        - Check if the ship is sunk
-    - Else:
-        - Mark cell as "Miss"
-    - Call checkGameOver()
-    - If gameOver = False:
-        - Set turn = "Player"
-        - Call renderGameplayScreen()
+    - Description: Handles the AI's turn using simple logic or random placement.
+    - Steps:
+        1. Use AILogic() to select a cell.
+        2. If the cell contains a ship:
+            - Mark the cell as "Hit".
+            - Check if the ship is sunk.
+        3. If the cell does not contain a ship:
+            - Mark the cell as "Miss".
+        4. Call checkGameOver().
+        5. If gameOver = false:
+            - Set turn = "Player".
+            - Call renderGameplayScreen().
 
 3.4 checkGameOver()
-    - If all Player's ships are sunk:
-        - Set gameOver = True
-        - Call renderGameOverScreen()
-    - If all AI's ships are sunk:
-        - Set gameOver = True
-        - Call renderGameOverScreen()
+    - Description: Checks if all ships for either the Player or AI are sunk.
+    - Steps:
+        1. If all Player's ships are sunk:
+            - Set gameOver = true.
+            - Call renderGameOverScreen().
+        2. If all AI's ships are sunk:
+            - Set gameOver = true.
+            - Call renderGameOverScreen().
 
-============================
-4. Helper Functions
-============================
+---
 
+### 4. Helper Functions
 4.1 validateShipPlacement(grid, ship, startCell, direction)
-    - Check if the ship fits within the grid boundaries
-    - Check if all cells in the ship's path are "Empty"
-    - Return True if valid, False otherwise
+    - Description: Validates if a ship can be placed at the specified location.
+    - Steps:
+        1. Check if the ship fits within the grid boundaries.
+        2. Check if all cells in the ship's path are "Empty".
+        3. Return true if valid, false otherwise.
 
 4.2 placeShip(grid, ship, startCell, direction)
-    - For each cell in the ship's path:
-        - Mark cell as occupied by the ship
-    - Add the ship to the grid's list of ships
+    - Description: Places a ship on the specified grid.
+    - Steps:
+        1. For each cell in the ship's path:
+            - Mark the cell as occupied by the ship.
+        2. Add the ship to the grid's list of ships.
 
 4.3 AILogic()
-    - If a previous hit exists:
-        - Check adjacent cells for the next attack
-        - Prioritize completing the current ship
-    - If no previous hit or all ships are resolved:
-        - Randomly select an unvisited cell
-    - Return selected cell
+    - Description: Determines the AI's move.
+    - Steps:
+        1. If there is a previous hit:
+            - Check adjacent cells to find the rest of the ship.
+        2. If no previous hits:
+            - Select a random unvisited cell.
+        3. Return the selected cell.
 
 4.4 isShipSunk(ship)
-    - Check all cells occupied by the ship
-    - If all cells are "Hit":
-        - Return True
-    - Else:
-        - Return False
+    - Description: Checks if a ship is fully sunk.
+    - Steps:
+        1. Check all cells occupied by the ship.
+        2. If all cells are marked "Hit":
+            - Return true.
+        3. Else:
+            - Return false.
 
 4.5 updateGrid(grid, cell, status)
-    - Update the grid's cell with the new status ("Hit", "Miss", etc.)
+    - Description: Updates the grid with the new cell status (e.g., "Hit", "Miss").
+    - Steps:
+        1. Update the grid at the specified cell with the new status.
 
-============================
-5. Utility Functions
-============================
+---
 
+### 5. Utility Functions
 5.1 getRandomCell()
-    - Return a random row and column within grid boundaries
+    - Description: Returns a random row and column within the grid boundaries.
 
 5.2 getAdjacentCells(cell)
-    - Return a list of adjacent cells (up, down, left, right) within grid boundaries
+    - Description: Returns a list of valid adjacent cells (up, down, left, right).
 
-============================
-6. Game Loop
-============================
+---
 
+### 6. Game Loop
 6.1 gameLoop()
-    - While gameOver = False:
-        - If turn = "Player":
-            - Call handlePlayerTurn()
-        - Else If turn = "AI":
-            - Call handleAITurn()
+    - Description: Manages the turn-based gameplay.
+    - Steps:
+        1. While gameOver = false:
+            - If turn = "Player":
+                - Call handlePlayerTurn().
+            - Else If turn = "AI":
+                - Call handleAITurn().
