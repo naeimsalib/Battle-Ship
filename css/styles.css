@@ -7,7 +7,7 @@
 
 /* Global Page Styles */
 html, body {
-    height: 100%; /* Ensures the page takes up the full viewport height */
+    height: 60%; /* Ensures the page takes up the full viewport height */
     font-family: 'Arial', sans-serif; /* Sets global font */
     background: linear-gradient(105deg, #233d71, #190c08); /* Adds background gradient */
 }
@@ -35,11 +35,16 @@ html, body {
 }
 
 /* Title Styles */
-.title {
+.welcome-title {
     text-align: center; /* Centers the title text */
     padding: 10px; /* Adds space around text */
     border-radius: 20px; /* Rounds title background */
     background-color: lightblue; /* Sets background color */
+}
+
+.turn-indicator{
+    color: white;
+    font-size: 50px;
 }
 
 /* Button Styles */

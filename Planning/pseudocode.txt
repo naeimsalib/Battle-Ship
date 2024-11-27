@@ -6,40 +6,42 @@
 
 # Global State Variables
 state = {
-    "playerBoard": [],               # 2D array representing the player's grid
-    "computerBoard": [],             # 2D array representing the computer's grid
-    "playerShips": [],               # Array of player ship objects { name, size, cells, isSunk }
-    "computerShips": [],             # Array of computer ship objects { name, size, cells, isSunk }
-    "currentTurn": "1",         # Tracks whose turn it is ("1" or "-1")
-    "gameOver": False,               # Tracks if the game has ended
-    "aiMemory": [],                  # Tracks AI logic for targeted hits
+    "̶p̶B̶o̶a̶r̶d̶"̶:̶ [̶]̶,̶               #̶ 2̶D̶ a̶r̶r̶a̶y̶ r̶e̶p̶r̶e̶s̶e̶n̶t̶i̶n̶g̶ t̶h̶e̶ p̶l̶a̶y̶e̶r̶'̶s̶ g̶r̶i̶d̶
+    "̶a̶i̶B̶o̶a̶r̶d̶"̶:̶ [̶]̶,̶             #̶ 2̶D̶ a̶r̶r̶a̶y̶ r̶e̶p̶r̶e̶s̶e̶n̶t̶i̶n̶g̶ t̶h̶e̶ c̶o̶m̶p̶u̶t̶e̶r̶'̶s̶ g̶r̶i̶d̶
+    "̶p̶S̶h̶i̶p̶s̶"̶:̶ [̶]̶,̶               #̶ A̶r̶r̶a̶y̶ o̶f̶ p̶l̶a̶y̶e̶r̶ s̶h̶i̶p̶ o̶b̶j̶e̶c̶t̶s̶ {̶ n̶a̶m̶e̶,̶ s̶i̶z̶e̶,̶ c̶e̶l̶l̶s̶,̶ i̶s̶S̶u̶n̶k̶ }̶
+    "̶a̶i̶S̶h̶i̶p̶s̶"̶:̶ [̶]̶,̶             #̶ A̶r̶r̶a̶y̶ o̶f̶ c̶o̶m̶p̶u̶t̶e̶r̶ s̶h̶i̶p̶ o̶b̶j̶e̶c̶t̶s̶ {̶ n̶a̶m̶e̶,̶ s̶i̶z̶e̶,̶ c̶e̶l̶l̶s̶,̶ i̶s̶S̶u̶n̶k̶ }̶
+    "̶t̶u̶r̶n̶"̶:̶ "̶1̶"̶,̶         #̶ T̶r̶a̶c̶k̶s̶ w̶h̶o̶s̶e̶ t̶u̶r̶n̶ i̶t̶ i̶s̶ (̶"̶1̶"̶ o̶r̶ "̶-̶1̶"̶)̶
+    "̶g̶a̶m̶e̶O̶v̶e̶r̶"̶:̶ F̶a̶l̶s̶e̶,̶               #̶ T̶r̶a̶c̶k̶s̶ i̶f̶ t̶h̶e̶ g̶a̶m̶e̶ h̶a̶s̶ e̶n̶d̶e̶d̶
+    "̶a̶i̶M̶e̶m̶o̶r̶y̶"̶:̶ [̶]̶,̶                  #̶ T̶r̶a̶c̶k̶s̶ A̶I̶ l̶o̶g̶i̶c̶ f̶o̶r̶ t̶a̶r̶g̶e̶t̶e̶d̶ h̶i̶t̶s̶
 }
 
 =======================
 
 # Initialize the game
 function init():
-    initializeBoards()               # Sets up empty boards for both player and computer
+    s̶e̶t̶ g̶a̶m̶e̶O̶v̶e̶r̶ =̶ f̶a̶l̶s̶e̶;̶
+    s̶e̶t̶ t̶u̶r̶n̶ =̶ -̶1̶;̶
+    i̶n̶i̶t̶i̶a̶l̶i̶z̶e̶B̶o̶a̶r̶d̶s̶(̶)̶               #̶ S̶e̶t̶s̶ u̶p̶ e̶m̶p̶t̶y̶ b̶o̶a̶r̶d̶s̶ f̶o̶r̶ b̶o̶t̶h̶ p̶l̶a̶y̶e̶r̶ a̶n̶d̶ c̶o̶m̶p̶u̶t̶e̶r̶
     placePlayerShips()               # Allow the player to place their ships
     placeComputerShips()             # Randomly place computer's ships
-    render()                         # Call the render function to prepare the game UI
+    r̶e̶n̶d̶e̶r̶(̶)̶                         #̶ C̶a̶l̶l̶ t̶h̶e̶ r̶e̶n̶d̶e̶r̶ f̶u̶n̶c̶t̶i̶o̶n̶ t̶o̶ p̶r̶e̶p̶a̶r̶e̶ t̶h̶e̶ g̶a̶m̶e̶ U̶I̶
     startGame()                      # Begin the game loop
 
 =======================
 
-# Helper function to initialize empty boards
-function initializeBoards():
-    for each board in ["playerBoard", "computerBoard"]:
-        create a 10x10 2D array filled with "Empty" for board
+#̶ H̶e̶l̶p̶e̶r̶ f̶u̶n̶c̶t̶i̶o̶n̶ t̶o̶ i̶n̶i̶t̶i̶a̶l̶i̶z̶e̶ e̶m̶p̶t̶y̶ b̶o̶a̶r̶d̶s̶
+f̶u̶n̶c̶t̶i̶o̶n̶ c̶r̶e̶a̶t̶e̶E̶m̶p̶t̶y̶G̶r̶i̶d̶(̶)̶:̶
+    f̶o̶r̶ e̶a̶c̶h̶ b̶o̶a̶r̶d̶ i̶n̶ [̶"̶p̶l̶a̶y̶e̶r̶B̶o̶a̶r̶d̶"̶,̶ "̶c̶o̶m̶p̶u̶t̶e̶r̶B̶o̶a̶r̶d̶"̶]̶:̶
+        c̶r̶e̶a̶t̶e̶ a̶ 1̶0̶x̶1̶0̶ 2̶D̶ a̶r̶r̶a̶y̶ f̶i̶l̶l̶e̶d̶ w̶i̶t̶h̶ "̶E̶m̶p̶t̶y̶"̶ f̶o̶r̶ b̶o̶a̶r̶d̶
 
 =======================
 
 # Helper function to render the game state
-function render():
-    renderBoards()                   # Draws the player and computer boards
-    renderShips()                    # Displays ships on the player's board
-    renderTurnIndicator()            # Displays whose turn it is
-    checkGameStatus()                # Checks if the game is over
+f̶u̶n̶c̶t̶i̶o̶n̶ r̶e̶n̶d̶e̶r̶(̶)̶:̶
+    r̶e̶n̶d̶e̶r̶B̶o̶a̶r̶d̶s̶(̶)̶                   #̶ D̶r̶a̶w̶s̶ t̶h̶e̶ p̶l̶a̶y̶e̶r̶ a̶n̶d̶ c̶o̶m̶p̶u̶t̶e̶r̶ b̶o̶a̶r̶d̶s̶
+    r̶e̶n̶d̶e̶r̶S̶h̶i̶p̶s̶(̶)̶                    #̶ D̶i̶s̶p̶l̶a̶y̶s̶ s̶h̶i̶p̶s̶ o̶n̶ t̶h̶e̶ p̶l̶a̶y̶e̶r̶'̶s̶ b̶o̶a̶r̶d̶
+    r̶e̶n̶d̶e̶r̶T̶u̶r̶n̶I̶n̶d̶i̶c̶a̶t̶o̶r̶(̶)̶            #̶ D̶i̶s̶p̶l̶a̶y̶s̶ w̶h̶o̶s̶e̶ t̶u̶r̶n̶ i̶t̶ i̶s̶
+    c̶h̶e̶c̶k̶G̶a̶m̶e̶S̶t̶a̶t̶u̶s̶(̶)̶                #̶ C̶h̶e̶c̶k̶s̶ i̶f̶ t̶h̶e̶ g̶a̶m̶e̶ i̶s̶ o̶v̶e̶r̶
 
 =======================
 

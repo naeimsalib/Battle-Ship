@@ -6,14 +6,14 @@
 const mainMenu = document.querySelector(".main-menu");
 const startBtn = document.querySelector(".start-btn");
 const gameArea = document.querySelector(".game-area");
+const turnIndicator = document.querySelector(".turn-indicator");
 
 /*----- App's State (Variables) -----*/
 let aiBoard;
 let pBoard;
 let aiShips;
 let pShips;
-let gameState;
-let turn;
+let turn; // Sets player or computer turn , Player -> 1 , Computer -> -1
 let gameOver;
 let aiMemory;
 /*----- Event Listeners -----*/
@@ -26,8 +26,6 @@ startBtn.addEventListener("click", moveStartMenu);
  * Initializes the game state and sets up everything for a new game
  */
 function init() {
-    console.log("Initializing game...");
-
     // Create empty 10x10 grids for both Player and AI
     pBoard = createEmptyGrid();
     aiBoard = createEmptyGrid();
@@ -51,10 +49,19 @@ function init() {
     ];
 
     // Set initial game state
-    gameState = "Setup"; // Game starts in the "Setup" phase
-    turn = "Player"; // Player always starts first
+    turn = 1; // Player always starts first
     gameOver = false; // Game is not over initially
-   
+    render();
+};
+
+
+function render () {
+    // Generate the game boards for both the Player and AI
+    generateBoard("computer-board", aiBoard);
+    generateBoard("player-board", pBoard);
+    renderShip();
+    renderTurnIndicator();
+    checkGameStatus();
 };
 
 
@@ -62,7 +69,6 @@ function init() {
  * Creates an empty 10x10 grid
  * return A 10x10 array filled with "Empty"
  */
-
 function createEmptyGrid() {
     console.log("Creating empty grid...");
     return Array.from({ length: 10 }, () => Array(10).fill("Empty"));
@@ -72,13 +78,8 @@ function createEmptyGrid() {
  * Moves the main menu off-screen and starts the setup phase
  */
 function moveStartMenu() {
-    console.log("Moving start menu...");
     mainMenu.classList.add("move-left"); // Moves the menu off-screen
     gameArea.classList.remove("hidden"); // Displays the game area
-
-    // Generate the game boards for both the Player and AI
-    generateBoard("computer-board", aiBoard);
-    generateBoard("player-board", pBoard);
 };
 
 // Handles clicks on cells and console.log the cells information
