@@ -1,144 +1,149 @@
-## Pseudocode: Battleship Game
+======================= Updated PseudoCode =======================
 
-### 1. Initialization Functions
-1̶.̶1̶ i̶n̶i̶t̶(̶)̶
-    -̶ D̶e̶s̶c̶r̶i̶p̶t̶i̶o̶n̶:̶ I̶n̶i̶t̶i̶a̶l̶i̶z̶e̶s̶ g̶a̶m̶e̶ v̶a̶r̶i̶a̶b̶l̶e̶s̶,̶ P̶l̶a̶y̶e̶r̶ a̶n̶d̶ A̶I̶ b̶o̶a̶r̶d̶s̶,̶ a̶n̶d̶ s̶e̶t̶s̶ u̶p̶ t̶h̶e̶ g̶a̶m̶e̶ s̶t̶a̶t̶e̶.̶
-    -̶ S̶t̶e̶p̶s̶:̶
-        1̶.̶ C̶r̶e̶a̶t̶e̶ e̶m̶p̶t̶y̶ 1̶0̶x̶1̶0̶ g̶r̶i̶d̶s̶ f̶o̶r̶ P̶l̶a̶y̶e̶r̶ a̶n̶d̶ A̶I̶.̶
-        2̶.̶ D̶e̶f̶i̶n̶e̶ P̶l̶a̶y̶e̶r̶'̶s̶ s̶h̶i̶p̶ i̶n̶v̶e̶n̶t̶o̶r̶y̶:̶
-            -̶ 2̶ s̶h̶i̶p̶s̶ o̶f̶ 3̶ c̶e̶l̶l̶s̶ e̶a̶c̶h̶.̶
-            -̶ 4̶ s̶h̶i̶p̶s̶ o̶f̶ 2̶ c̶e̶l̶l̶s̶ e̶a̶c̶h̶.̶
-        3̶.̶ D̶e̶f̶i̶n̶e̶ A̶I̶'̶s̶ s̶h̶i̶p̶ i̶n̶v̶e̶n̶t̶o̶r̶y̶:̶
-            -̶ 2̶ s̶h̶i̶p̶s̶ o̶f̶ 3̶ c̶e̶l̶l̶s̶ e̶a̶c̶h̶.̶
-            -̶ 4̶ s̶h̶i̶p̶s̶ o̶f̶ 2̶ c̶e̶l̶l̶s̶ e̶a̶c̶h̶.̶
-        4̶.̶ S̶e̶t̶ g̶a̶m̶e̶S̶t̶a̶t̶e̶ =̶ "̶S̶e̶t̶u̶p̶"̶.̶
-        5̶.̶ S̶e̶t̶ t̶u̶r̶n̶ =̶ "̶P̶l̶a̶y̶e̶r̶"̶.̶
-        6̶.̶ S̶e̶t̶ g̶a̶m̶e̶O̶v̶e̶r̶ =̶ f̶a̶l̶s̶e̶.̶
+# Pseudocode for Battleship Game
 
----
-#̶#̶#̶ 2̶.̶ M̶o̶v̶e̶ S̶t̶a̶r̶t̶ m̶e̶n̶u̶ F̶u̶n̶c̶t̶i̶o̶n̶s̶
-2̶.̶1̶ m̶o̶v̶e̶S̶t̶a̶r̶t̶M̶e̶n̶u̶(̶)̶
-    -̶ D̶e̶s̶c̶r̶i̶p̶t̶i̶o̶n̶:̶ H̶i̶d̶e̶s̶ t̶h̶e̶ m̶a̶i̶n̶ m̶e̶n̶u̶ a̶n̶d̶ b̶e̶g̶i̶n̶s̶ g̶a̶m̶e̶ s̶e̶t̶u̶p̶ a̶f̶t̶e̶r̶ s̶t̶a̶r̶t̶ b̶u̶t̶t̶o̶n̶ i̶s̶ c̶l̶i̶c̶k̶e̶d̶
-    -̶ S̶t̶e̶p̶s̶:̶
-        1̶.̶ H̶i̶d̶e̶ t̶h̶e̶ m̶a̶i̶n̶ m̶e̶n̶u̶ b̶y̶ m̶o̶v̶i̶n̶g̶ i̶t̶ o̶f̶f̶-̶s̶c̶r̶e̶e̶n̶.̶
-        2̶.̶ M̶a̶k̶e̶ t̶h̶e̶ g̶a̶m̶e̶ a̶r̶e̶a̶ v̶i̶s̶i̶b̶l̶e̶.̶
-        3̶.̶ C̶a̶l̶l̶ g̶e̶n̶e̶r̶a̶t̶e̶B̶o̶a̶r̶d̶(̶"̶p̶l̶a̶y̶e̶r̶-̶b̶o̶a̶r̶d̶"̶)̶ t̶o̶ c̶r̶e̶a̶t̶e̶ t̶h̶e̶ P̶l̶a̶y̶e̶r̶'̶s̶ b̶o̶a̶r̶d̶.̶
-        4̶.̶ C̶a̶l̶l̶ g̶e̶n̶e̶r̶a̶t̶e̶B̶o̶a̶r̶d̶(̶"̶c̶o̶m̶p̶u̶t̶e̶r̶-̶b̶o̶a̶r̶d̶"̶)̶ t̶o̶ c̶r̶e̶a̶t̶e̶ t̶h̶e̶ A̶I̶'̶s̶ b̶o̶a̶r̶d̶.̶
-        5̶.̶ D̶e̶s̶c̶r̶i̶p̶t̶i̶o̶n̶:̶ D̶i̶s̶p̶l̶a̶y̶s̶ b̶o̶t̶h̶ g̶r̶i̶d̶s̶ f̶o̶r̶ g̶a̶m̶e̶p̶l̶a̶y̶.̶
+=======================
 
----
+# Global State Variables
+state = {
+    "playerBoard": [],               # 2D array representing the player's grid
+    "computerBoard": [],             # 2D array representing the computer's grid
+    "playerShips": [],               # Array of player ship objects { name, size, cells, isSunk }
+    "computerShips": [],             # Array of computer ship objects { name, size, cells, isSunk }
+    "currentTurn": "1",         # Tracks whose turn it is ("1" or "-1")
+    "gameOver": False,               # Tracks if the game has ended
+    "aiMemory": [],                  # Tracks AI logic for targeted hits
+}
 
-#̶#̶#̶ 3̶.̶ B̶o̶a̶r̶d̶ G̶e̶n̶e̶r̶a̶t̶i̶o̶n̶ f̶u̶n̶c̶t̶i̶o̶n̶
-3̶.̶1̶ g̶e̶n̶e̶r̶a̶t̶e̶B̶o̶a̶r̶d̶(̶b̶o̶a̶r̶d̶I̶d̶)̶
-    -̶ D̶e̶s̶c̶r̶i̶p̶t̶i̶o̶n̶:̶ D̶y̶n̶a̶m̶i̶c̶a̶l̶l̶y̶ g̶e̶n̶e̶r̶a̶t̶e̶s̶ a̶ 1̶0̶x̶1̶0̶ g̶r̶i̶d̶ o̶f̶ c̶e̶l̶l̶s̶ f̶o̶r̶ t̶h̶e̶ s̶p̶e̶c̶i̶f̶i̶e̶d̶ b̶o̶a̶r̶d̶.̶
-    -̶ S̶t̶e̶p̶s̶:̶
-        1̶.̶ S̶e̶l̶e̶c̶t̶ t̶h̶e̶ c̶o̶n̶t̶a̶i̶n̶e̶r̶ f̶o̶r̶ t̶h̶e̶ s̶p̶e̶c̶i̶f̶i̶e̶d̶ b̶o̶a̶r̶d̶I̶d̶.̶
-        2̶.̶ C̶l̶e̶a̶r̶ a̶n̶y̶ e̶x̶i̶s̶t̶i̶n̶g̶ c̶e̶l̶l̶s̶ i̶n̶ t̶h̶e̶ c̶o̶n̶t̶a̶i̶n̶e̶r̶.̶
-        3̶.̶ C̶r̶e̶a̶t̶e̶ a̶ 1̶0̶x̶1̶0̶ g̶r̶i̶d̶ o̶f̶ c̶e̶l̶l̶s̶:̶
-            -̶ A̶s̶s̶i̶g̶n̶ u̶n̶i̶q̶u̶e̶ I̶D̶s̶ t̶o̶ e̶a̶c̶h̶ c̶e̶l̶l̶.̶
-            -̶ A̶d̶d̶ a̶ c̶l̶i̶c̶k̶ l̶i̶s̶t̶e̶n̶e̶r̶ t̶o̶ e̶a̶c̶h̶ c̶e̶l̶l̶.̶
-                -̶ L̶o̶g̶ t̶h̶e̶ c̶e̶l̶l̶ I̶D̶ a̶n̶d̶ b̶o̶a̶r̶d̶ t̶y̶p̶e̶ w̶h̶e̶n̶ c̶l̶i̶c̶k̶e̶d̶.̶
-                -̶ H̶i̶g̶h̶l̶i̶g̶h̶t̶ t̶h̶e̶ c̶l̶i̶c̶k̶e̶d̶ c̶e̶l̶l̶.̶
-        4̶.̶ A̶p̶p̶e̶n̶d̶ t̶h̶e̶ c̶e̶l̶l̶s̶ t̶o̶ t̶h̶e̶ b̶o̶a̶r̶d̶ c̶o̶n̶t̶a̶i̶n̶e̶r̶.̶
+=======================
 
+# Initialize the game
+function init():
+    initializeBoards()               # Sets up empty boards for both player and computer
+    placePlayerShips()               # Allow the player to place their ships
+    placeComputerShips()             # Randomly place computer's ships
+    render()                         # Call the render function to prepare the game UI
+    startGame()                      # Begin the game loop
 
-3.2 handlePlayerTurn()
-    - Description: Handles the Player's turn and updates the game state.
-    - Steps:
-        1. Wait for the Player to click a cell on the AI's grid.
-        2. If the cell is already attacked:
-            - Do nothing.
-        3. If the cell contains a ship:
-            - Mark the cell as "Hit".
-            - Check if the ship is sunk.
-        4. If the cell does not contain a ship:
-            - Mark the cell as "Miss".
-        5. Call checkGameOver().
-        6. If gameOver = false:
-            - Set turn = "AI".
-            - Call handleAITurn().
+=======================
 
-3.3 handleAITurn()
-    - Description: Handles the AI's turn using simple logic or random placement.
-    - Steps:
-        1. Use AILogic() to select a cell.
-        2. If the cell contains a ship:
-            - Mark the cell as "Hit".
-            - Check if the ship is sunk.
-        3. If the cell does not contain a ship:
-            - Mark the cell as "Miss".
-        4. Call checkGameOver().
-        5. If gameOver = false:
-            - Set turn = "Player".
-            - Call renderGameplayScreen().
+# Helper function to initialize empty boards
+function initializeBoards():
+    for each board in ["playerBoard", "computerBoard"]:
+        create a 10x10 2D array filled with "Empty" for board
 
-3.4 checkGameOver()
-    - Description: Checks if all ships for either the Player or AI are sunk.
-    - Steps:
-        1. If all Player's ships are sunk:
-            - Set gameOver = true.
-            - Call renderGameOverScreen().
-        2. If all AI's ships are sunk:
-            - Set gameOver = true.
-            - Call renderGameOverScreen().
+=======================
 
----
+# Helper function to render the game state
+function render():
+    renderBoards()                   # Draws the player and computer boards
+    renderShips()                    # Displays ships on the player's board
+    renderTurnIndicator()            # Displays whose turn it is
+    checkGameStatus()                # Checks if the game is over
 
-### 4. Helper Functions
-4.1 validateShipPlacement(grid, ship, startCell, direction)
-    - Description: Validates if a ship can be placed at the specified location.
-    - Steps:
-        1. Check if the ship fits within the grid boundaries.
-        2. Check if all cells in the ship's path are "Empty".
-        3. Return true if valid, false otherwise.
+=======================
 
-4.2 placeShip(grid, ship, startCell, direction)
-    - Description: Places a ship on the specified grid.
-    - Steps:
-        1. For each cell in the ship's path:
-            - Mark the cell as occupied by the ship.
-        2. Add the ship to the grid's list of ships.
+# Helper function to render boards
+function renderBoards():
+    loop through each cell of "playerBoard" and "computerBoard":
+        display the cell's state (Empty, hit, or miss)
 
-4.3 AILogic()
-    - Description: Determines the AI's move.
-    - Steps:
-        1. If there is a previous hit:
-            - Check adjacent cells to find the rest of the ship.
-        2. If no previous hits:
-            - Select a random unvisited cell.
-        3. Return the selected cell.
+=======================
 
-4.4 isShipSunk(ship)
-    - Description: Checks if a ship is fully sunk.
-    - Steps:
-        1. Check all cells occupied by the ship.
-        2. If all cells are marked "Hit":
-            - Return true.
-        3. Else:
-            - Return false.
+# Helper function to place player ships
+function placePlayerShips():
+    loop through each ship in ["Carrier", "Battleship", "Cruiser", "Submarine", "Destroyer"]:
+        allow the player to place the ship on the "playerBoard" manually
 
-4.5 updateGrid(grid, cell, status)
-    - Description: Updates the grid with the new cell status (e.g., "Hit", "Miss").
-    - Steps:
-        1. Update the grid at the specified cell with the new status.
+=======================
 
----
+# Helper function to place computer ships randomly
+function placeComputerShips():
+    loop through each ship in ["Carrier", "Battleship", "Cruiser", "Submarine", "Destroyer"]:
+        randomly choose a starting point and direction until valid placement is found
+        mark the ship's cells on "computerBoard"
 
-### 5. Utility Functions
-5.1 getRandomCell()
-    - Description: Returns a random row and column within the grid boundaries.
+=======================
 
-5.2 getAdjacentCells(cell)
-    - Description: Returns a list of valid adjacent cells (up, down, left, right).
+# Main game loop
+function startGame():
+    while not state["gameOver"]:
+        if state["currentTurn"] == "1":
+            handlePlayerTurn()
+        else:
+            handleComputerTurn()
+        render()                     # Re-render after each turn
 
----
+# Handle player's turn
+function handlePlayerTurn():
+    wait for player to click a cell on "computerBoard"
+    if clicked cell contains a computer ship:
+        mark cell as "hit"
+        updateShipState("computerShips", clicked cell)
+    else if clicked cell has no ship:
+        mark cell as "miss"
+    switchTurn()
 
-### 6. Game Loop
-6.1 gameLoop()
-    - Description: Manages the turn-based gameplay.
-    - Steps:
-        1. While gameOver = false:
-            - If turn = "Player":
-                - Call handlePlayerTurn().
-            - Else If turn = "AI":
-                - Call handleAITurn().
+# Handle computer's turn
+function handleComputerTurn():
+    cell = aiLogic()                 # Get cell to attack using AI logic
+    if cell contains a player ship:
+        mark cell as "hit"
+        updateShipState("playerShips", cell)
+    else if clicked cell has no ship::
+        mark cell as "miss"
+    switchTurn()
+
+# AI Logic for computer
+function aiLogic():
+    if state["aiMemory"] is not empty:
+        target adjacent cells based on "aiMemory"
+    else:
+        choose a random cell on "playerBoard" that has not been targeted
+    return chosen cell
+
+# Update the state of a ship when it is hit
+function updateShipState(ships, hitCell):
+    find the ship containing hitCell in ships
+    mark hitCell as "damaged"
+    if all cells of the ship are damaged:
+        mark ship as "sunk"
+
+# Switch turns
+function switchTurn():
+    if state["currentTurn"] == "1":
+        state["currentTurn"] = "-1"
+    else:
+        state["currentTurn"] = "1"
+
+# Check if the game is over
+function checkGameStatus():
+    if all ships in "playerShips" are sunk:
+        state["gameOver"] = True
+        display message: "You lose!"
+    elif all ships in "computerShips" are sunk:
+        state["gameOver"] = True
+        display message: "You win!"
+
+# Helper function to render whose turn it is
+function renderTurnIndicator():
+    display message: "It's [currentTurn]'s turn"
+
+# Additional Helper function to Turn selected ship
+function turnShip (ship)
+  change the direction of selected ship (ship), 45 Degrees to the right.
+
+# Helper function to start the game 
+#Gets called when user clicks on start game button
+function startGame ()
+    if (Ships to be placed === 0)
+      Then allow the first player to go to hit the opponint board cells
+    else 
+        Display a message "Y9ou need to finish placing all ships"
+
+# Additional utility functions
+function isValidPlacement(board, ship, startCell, direction):
+    check if ship fits within bounds and does not overlap other ships
+
+function getAdjacentCells(cell):
+    return list of valid adjacent cells (up, down, left, right) for the given cell

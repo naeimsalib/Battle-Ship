@@ -15,7 +15,7 @@ let pShips;
 let gameState;
 let turn;
 let gameOver;
-
+let aiMemory;
 /*----- Event Listeners -----*/
 // Start button listener: Moves the main menu off-screen and begins game setup
 startBtn.addEventListener("click", moveStartMenu);

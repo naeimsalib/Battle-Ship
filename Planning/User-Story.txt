@@ -1,0 +1,52 @@
+User Story: Battleship Game
+
+1. Title: Sink the Enemy Fleet!
+
+   As a player, I want to immerse myself in an exciting strategy game where I can place my fleet, 
+   strategically attack enemy ships, and aim to sink the entire opposing fleet before mine is destroyed.
+
+---
+
+2. Overview:
+
+   - The Battleship game is a turn-based strategy game where two players (you and the computer)
+     compete to locate and sink each other's hidden ships on a grid-based battlefield.
+   - The first to sink all of the opponent's ships wins the game.
+
+---
+
+3. How to Play:
+
+   3.1 Game Setup:
+       - You and the opponent have a grid (10x10) to arrange your fleet of ships.
+       - Each ship occupies a certain number of consecutive cells on the grid, either horizontally or vertically.
+       - Ships to arrange:
+           * Carrier: 5 cells.
+           * Battleship: 4 cells.
+           * Cruiser: 3 cells.
+           * Submarine: 3 cells.
+           * Destroyer: 2 cells.
+       - Arrange your ships carefully to make them hard to locate!
+
+   3.2 Gameplay:
+       - The game alternates turns between you and the computer
+       - On your turn:
+           * Choose a cell on the opponent's grid to fire at.
+           * If the chosen cell contains a part of a ship, it is marked as a "hit."
+           * If it does not, it is marked as a "miss."
+       - The opponent also takes their turn to fire at your grid.
+
+   3.3 Feedback:
+       - The game provides visual feedback for hits (e.g., red marker) and misses (e.g., Blue water marker) on the grid.
+       - When a ship is fully destroyed, the game announces which ship has been sunk 
+         (e.g., "You sank the Destroyer!").
+
+---
+
+4. Winning and Losing:
+
+   4.1 Victory Conditions:
+       - You win the game when all parts of the opponent's ships are destroyed.
+
+   4.2 Defeat Conditions:
+       - You lose the game when the opponent sinks all parts of your ships first.
