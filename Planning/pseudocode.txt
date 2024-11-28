@@ -39,14 +39,13 @@ f̶u̶n̶c̶t̶i̶o̶n̶ c̶r̶e̶a̶t̶e̶E̶m̶p̶t̶y̶G̶r̶i̶d̶(̶)̶:̶
 # Helper function to render the game state
 f̶u̶n̶c̶t̶i̶o̶n̶ r̶e̶n̶d̶e̶r̶(̶)̶:̶
     r̶e̶n̶d̶e̶r̶B̶o̶a̶r̶d̶s̶(̶)̶                   #̶ D̶r̶a̶w̶s̶ t̶h̶e̶ p̶l̶a̶y̶e̶r̶ a̶n̶d̶ c̶o̶m̶p̶u̶t̶e̶r̶ b̶o̶a̶r̶d̶s̶
-    r̶e̶n̶d̶e̶r̶S̶h̶i̶p̶s̶(̶)̶                    #̶ D̶i̶s̶p̶l̶a̶y̶s̶ s̶h̶i̶p̶s̶ o̶n̶ t̶h̶e̶ p̶l̶a̶y̶e̶r̶'̶s̶ b̶o̶a̶r̶d̶
     r̶e̶n̶d̶e̶r̶T̶u̶r̶n̶I̶n̶d̶i̶c̶a̶t̶o̶r̶(̶)̶            #̶ D̶i̶s̶p̶l̶a̶y̶s̶ w̶h̶o̶s̶e̶ t̶u̶r̶n̶ i̶t̶ i̶s̶
     c̶h̶e̶c̶k̶G̶a̶m̶e̶S̶t̶a̶t̶u̶s̶(̶)̶                #̶ C̶h̶e̶c̶k̶s̶ i̶f̶ t̶h̶e̶ g̶a̶m̶e̶ i̶s̶ o̶v̶e̶r̶
 
 =======================
 
 # Helper function to render boards
-function renderBoards():
+f̶u̶n̶c̶t̶i̶o̶n̶ r̶e̶n̶d̶e̶r̶B̶o̶a̶r̶d̶s̶(̶)̶:̶
     loop through each cell of "playerBoard" and "computerBoard":
         display the cell's state (Empty, hit, or miss)
 

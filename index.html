@@ -19,11 +19,20 @@
       </section>
 
       <hr class="divider" />
-      <section id="player-board" class="board-container">
-        <h2>Player Board</h2>
-        <div class="game-board"></div>
-        <button class="place-btn">Play</button>
-      </section>
+      <div class="Player-side">
+        <section class="ships-carrier">
+          <div class="Carrier-preview" draggable="true"></div>
+          <div class="Battleship-preview" draggable="true"></div>
+          <div class="Destroyer-preview" draggable="true"></div>
+          <div class="Submarine-preview" draggable="true"></div>
+          <div class="Patrol-boat-preview" draggable="true"></div>
+        </section>
+        <section id="player-board" class="board-container">
+          <h2>Player Board</h2>
+          <div class="game-board"></div>
+          <button class="place-btn">Play</button>
+        </section>
+      </div>
       <section class="turn-indicator">
         <h2>Players Turn</h2>
       </section>

@@ -55,14 +55,14 @@ function init() {
 };
 
 
-function render () {
-    // Generate the game boards for both the Player and AI
+function render() {
     generateBoard("computer-board", aiBoard);
     generateBoard("player-board", pBoard);
-    renderShip();
+    renderShips(); // Render ships in the ships-carrier section
     renderTurnIndicator();
     checkGameStatus();
-};
+}
+
 
 
 /**
@@ -70,7 +70,6 @@ function render () {
  * return A 10x10 array filled with "Empty"
  */
 function createEmptyGrid() {
-    console.log("Creating empty grid...");
     return Array.from({ length: 10 }, () => Array(10).fill("Empty"));
 };
 
@@ -82,6 +81,62 @@ function moveStartMenu() {
     gameArea.classList.remove("hidden"); // Displays the game area
 };
 
+//  loop through each cell of "playerBoard" and "computerBoard" to display and update it with it's value
+function renderBoards () {
+    
+};
+
+
+/**
+ * Renders ships dynamically in the ships-carrier section
+ */
+function renderShips() {
+    const shipsCarrier = document.querySelector(".ships-carrier");
+
+    // Define ship types and sizes
+    const ships = [
+        { id: "carrier", name: "Carrier", size: 5 },
+        { id: "battleship", name: "Battleship", size: 4 },
+        { id: "destroyer", name: "Destroyer", size: 3 },
+        { id: "submarine", name: "Submarine", size: 3 },
+        { id: "patrol-boat", name: "Patrol Boat", size: 2 }
+    ];
+
+    // Create and append ship previews
+    ships.forEach((ship) => {
+        const shipContainer = document.createElement("div");
+        shipContainer.classList.add("ship-container");
+        shipContainer.setAttribute("data-ship", ship.name);
+        shipContainer.title = ship.name; // Tooltip
+
+        // Create individual cells for the ship
+        for (let i = 0; i < ship.size; i++) {
+            const cell = document.createElement("div");
+            cell.classList.add("ship-cell");
+            cell.style.width = "4vmin"; // Match the board cell size
+            cell.style.height = "4vmin";
+            shipContainer.appendChild(cell);
+        }
+
+        shipsCarrier.appendChild(shipContainer);
+    });
+}
+
+// Helper function to update the Turn indicator 
+// By multiplying the current turn by -1 and assigning it to the turn variable 
+function renderTurnIndicator(){
+    turn *= -1;
+};
+
+function checkGameStatus(){
+    if(!gameOver){
+
+    }
+};
+
+function handlePlayerTurn (evt){
+
+}
 // Handles clicks on cells and console.log the cells information
 function handleCellClick(cell, boardId) {
     if (boardId === "player-board") {
@@ -97,14 +152,7 @@ function handleCellClick(cell, boardId) {
 
 //  Generates a 10x10 game board for either the Player or AI
 function generateBoard(boardId, board) {
-    console.log(`Generating board for ${boardId}...`);
     const boardElement = document.querySelector(`#${boardId} .game-board`);
-    if (!boardElement) {
-        console.warn(`Board element not found for ID: ${boardId}`);
-        return;
-    };
-
-    boardElement.innerHTML = "";
 
     for (let i = 0; i < 10; i++) {
         for (let j = 0; j < 10; j++) {

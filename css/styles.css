@@ -47,6 +47,22 @@ html, body {
     font-size: 50px;
 }
 
+/* Ship Container Styles */
+.ship-container {
+    display: flex; /* Align ship cells horizontally */
+    margin-bottom: 10px; /* Space between ships vertically */
+    justify-content: center; /* Center-align the ships */
+    cursor: grab; /* Show grab cursor for dragging */
+}
+
+/* Individual Ship Cell Styles */
+.ship-cell {
+    background-color: gray; /* Base color for ship cells */
+    border: 2px solid black; /* Distinguish each cell with a border */
+    border-radius: 2px; /* Slightly round the edges of each cell */
+}
+
+
 /* Button Styles */
 .start-btn {
     padding: 10px 20px; /* Adds internal spacing */
@@ -69,7 +85,21 @@ html, body {
     align-items: center; /* Centers boards horizontally */
     width: 90%; /* Restricts area width */
 }
+/* Ships carrier Container Styles */
+.ships-carrier{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center; /* Centers text inside container */
+    padding: 10px; /* Adds internal spacing */
+    background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
+    border-radius: 10px; /* Rounds corners */
+}
 
+.Player-side{
+    display: flex;
+    align-items:stretch;
+}
 /* Board Container Styles */
 .board-container {
     padding: 10px; /* Adds internal spacing */
