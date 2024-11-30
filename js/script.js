@@ -1,175 +1,268 @@
 /*----- Constants -----*/
-// AUDIO: Background music or sound effect for the game
-//const AUDIO = new Audio('https://cdn.pixabay.com/audio/2022/11/05/audio_997c8fe344.mp3');
-
-// DOM elements for main menu, start button, and game area
 const mainMenu = document.querySelector(".main-menu");
 const startBtn = document.querySelector(".start-btn");
 const gameArea = document.querySelector(".game-area");
+const shipsCarrier = document.querySelector(".ships-carrier");
 const turnIndicator = document.querySelector(".turn-indicator");
+const logButton = document.querySelector(".log-ship-btn");
 
-/*----- App's State (Variables) -----*/
-let aiBoard;
-let pBoard;
-let aiShips;
-let pShips;
-let turn; // Sets player or computer turn , Player -> 1 , Computer -> -1
-let gameOver;
-let aiMemory;
+/*----- State Variables -----*/
+let pBoard, aiBoard, pShips, selectedShip = null, draggingFromBoard = false;
+
 /*----- Event Listeners -----*/
-// Start button listener: Moves the main menu off-screen and begins game setup
-startBtn.addEventListener("click", moveStartMenu);
-
+startBtn.addEventListener("click", startGame);
+logButton.addEventListener("click", logPlayerShipCells);
 /*----- Functions -----*/
 
 /**
- * Initializes the game state and sets up everything for a new game
+ * Initializes the game state
  */
 function init() {
-    // Create empty 10x10 grids for both Player and AI
-    pBoard = createEmptyGrid();
-    aiBoard = createEmptyGrid();
-
-    // Define Player's ship inventory
-    pShips = [
-        { type: "Carrier", size: 5, cells: [] },
-        { type: "Battleship", size: 4, cells: [] },
-        { type: "Destroyer", size: 3, cells: [] },
-        { type: "Submarine", size: 3, cells: [] },
-        { type: "Patrol Boat", size: 2, cells: [] }
-    ];
-
-    // Define AI's ship inventory
-    aiShips = [
-        { type: "Carrier", size: 5, cells: [] },
-        { type: "Battleship", size: 4, cells: [] },
-        { type: "Destroyer", size: 3, cells: [] },
-        { type: "Submarine", size: 3, cells: [] },
-        { type: "Patrol Boat", size: 2, cells: [] }
-    ];
-
-    // Set initial game state
-    turn = 1; // Player always starts first
-    gameOver = false; // Game is not over initially
+    // Create two empty grids for the player and computer
+    pBoard = createGrid();
+    aiBoard = createGrid();
+    // Create the players ships
+    pShips = createShips();
+    // Call the render function 
     render();
 };
 
-
+/**
+ * Renders the game elements
+ */
 function render() {
-    generateBoard("computer-board", aiBoard);
-    generateBoard("player-board", pBoard);
-    renderShips(); // Render ships in the ships-carrier section
-    renderTurnIndicator();
-    checkGameStatus();
-}
-
-
+    // Render the Board on the DOM for ach player (player and computer)
+    renderBoard("player-board", pBoard);
+    renderBoard("computer-board", aiBoard, true); // Computer board is initially inactive
+    renderShips();
+    //enableDragAndDrop(); // Enable drag-and-drop functionality
+    updateTurnIndicator();
+};
 
 /**
  * Creates an empty 10x10 grid
- * return A 10x10 array filled with "Empty"
  */
-function createEmptyGrid() {
+function createGrid() {
     return Array.from({ length: 10 }, () => Array(10).fill("Empty"));
 };
 
 /**
- * Moves the main menu off-screen and starts the setup phase
+ * Renders a board on the DOM for whatever boardID is passed (e.g., "player-board" or "computer-board")
  */
-function moveStartMenu() {
-    mainMenu.classList.add("move-left"); // Moves the menu off-screen
-    gameArea.classList.remove("hidden"); // Displays the game area
-};
+function renderBoard(boardId, board, disableClicks = false) {
+    const boardEl = document.querySelector(`#${boardId} .game-board`);
+    boardEl.innerHTML = "";
 
-//  loop through each cell of "playerBoard" and "computerBoard" to display and update it with it's value
-function renderBoards () {
-    
-};
+    board.forEach((row, rowIndex) => {
+        row.forEach((cell, colIndex) => {
+            const cellEl = document.createElement("div");
+            cellEl.classList.add("cell");
+            cellEl.id = `${boardId}-c${colIndex}r${rowIndex}`;
+            cellEl.dataset.col = colIndex;
+            cellEl.dataset.row = rowIndex;
 
+            if (!disableClicks) {
+                cellEl.addEventListener("click", () => handleCellClick(cellEl, boardId));
+            };
+
+            cellEl.addEventListener("dragover", handleDragOver);
+            cellEl.addEventListener("drop", handleDrop);
+
+            boardEl.appendChild(cellEl);
+        });
+    });
+};
 
 /**
- * Renders ships dynamically in the ships-carrier section
+ * Creates ship data
  */
-function renderShips() {
-    const shipsCarrier = document.querySelector(".ships-carrier");
-
-    // Define ship types and sizes
-    const ships = [
-        { id: "carrier", name: "Carrier", size: 5 },
-        { id: "battleship", name: "Battleship", size: 4 },
-        { id: "destroyer", name: "Destroyer", size: 3 },
-        { id: "submarine", name: "Submarine", size: 3 },
-        { id: "patrol-boat", name: "Patrol Boat", size: 2 }
+function createShips() {
+    return [
+        { type: "Carrier", size: 5, cells: [], color: "Blue"},
+        { type: "Battleship", size: 4, cells: [], color: "Green" },
+        { type: "Destroyer", size: 3, cells: [], color: "Red" },
+        { type: "Submarine", size: 3, cells: [], color: "Black" },
+        { type: "Patrol Boat", size: 2, cells: [], color: "White" }
     ];
-
-    // Create and append ship previews
-    ships.forEach((ship) => {
-        const shipContainer = document.createElement("div");
-        shipContainer.classList.add("ship-container");
-        shipContainer.setAttribute("data-ship", ship.name);
-        shipContainer.title = ship.name; // Tooltip
-
-        // Create individual cells for the ship
-        for (let i = 0; i < ship.size; i++) {
-            const cell = document.createElement("div");
-            cell.classList.add("ship-cell");
-            cell.style.width = "4vmin"; // Match the board cell size
-            cell.style.height = "4vmin";
-            shipContainer.appendChild(cell);
-        }
-
-        shipsCarrier.appendChild(shipContainer);
-    });
-}
-
-// Helper function to update the Turn indicator 
-// By multiplying the current turn by -1 and assigning it to the turn variable 
-function renderTurnIndicator(){
-    turn *= -1;
 };
 
-function checkGameStatus(){
-    if(!gameOver){
+/**
+ * Starts the game by hiding the main menu and showing the game area
+ */
+function startGame() {
+    mainMenu.classList.add("move-left");
+    gameArea.classList.remove("hidden");
+};
 
+/**
+ * Logs all cells on the player's board that contain ships
+ */
+function logPlayerShipCells() {
+    console.log("Player Ship Cells:");
+    pBoard.forEach((row, rowIndex) => {
+        row.forEach((cell, colIndex) => {
+            if (cell !== "Empty") {
+                console.log(`Ship: ${cell}, Row: ${rowIndex}, Col: ${colIndex}`);
+            };
+        });
+    });
+};
+
+/**
+ * Renders ships in the ships-carrier
+ */
+function renderShips() {
+    shipsCarrier.innerHTML = "";
+    pShips.forEach((ship) => {
+        const shipEl = document.createElement("div");
+        shipEl.classList.add("ship-container");
+        shipEl.setAttribute("draggable", "true");
+        shipEl.setAttribute("data-ship", ship.type);
+        shipEl.setAttribute("data-size", ship.size);
+
+        // Dynamically set the CSS variable for grid size
+        shipEl.style.setProperty("--size", ship.size);
+
+        shipEl.addEventListener("dragstart", handleDragStart);
+
+        for (let i = 0; i < ship.size; i++) {
+            const cellEl = document.createElement("div");
+            cellEl.classList.add("ship-cell");
+            cellEl.style.backgroundColor = ship.color;
+            shipEl.appendChild(cellEl);
+        };
+
+        shipsCarrier.appendChild(shipEl);
+    });
+};
+
+/**
+ * Updates the turn indicator
+ */
+function updateTurnIndicator() {
+    turnIndicator.textContent = "Place your ships";
+}
+
+/**
+ * Handles cell clicks
+ */
+function handleCellClick(cell, boardId) {
+    const col = parseInt(cell.dataset.col, 10);
+    const row = parseInt(cell.dataset.row, 10);
+    const board = boardId === "player-board" ? pBoard : aiBoard;
+
+    if (board[row][col] === "Empty") {
+        cell.style.backgroundColor = "DeepSkyBlue"; // Highlight empty cell
+    } else {
+        cell.style.backgroundColor = "red"; // Highlight ship part
+    };
+};
+
+/**
+ * Handles drag start event
+ */
+function handleDragStart(event) {
+    const shipType = event.target.dataset.ship;
+    const shipSize = parseInt(event.target.dataset.size, 10);
+
+    selectedShip = {
+        type: shipType,
+        size: shipSize,
+    };
+
+    // Check if dragging from the board
+    if (event.target.parentElement.classList.contains("game-board")) {
+        draggingFromBoard = true;
+
+        // Clear the ship's current position on the board
+        const ship = pShips.find((s) => s.type === shipType);
+        if (ship) {
+            ship.cells.forEach(({ col, row }) => {
+                pBoard[row][col] = "Empty";
+                const cellEl = document.querySelector(`#player-board-c${col}r${row}`);
+                if (cellEl) cellEl.style.backgroundColor = ""; // Reset cell color
+            });
+            ship.cells = []; // Reset ship's cells
+        }
+    } else {
+        draggingFromBoard = false;
+    };
+};
+
+/**
+ * Handles drag over event
+ */
+function handleDragOver(event) {
+    event.preventDefault();
+}
+
+/**
+ * Handles drop event
+ */
+function handleDrop(event) {
+    event.preventDefault();
+
+    if (!selectedShip) {
+        console.error("No ship selected for drop!");
+        return;
+    }
+
+    const dropCol = parseInt(event.target.dataset.col, 10);
+    const dropRow = parseInt(event.target.dataset.row, 10);
+
+    if (isValidPlacement(pBoard, selectedShip.size, dropCol, dropRow)) {
+        placeShipOnBoard(pBoard, selectedShip.type, selectedShip.size, dropCol, dropRow);
+        updateBoardVisuals(selectedShip.type, selectedShip.size, dropCol, dropRow, "player-board");
+
+        // Save the ship's new position
+        const ship = pShips.find((s) => s.type === selectedShip.type);
+        if (ship) {
+            ship.cells = Array.from({ length: selectedShip.size }, (_, i) => ({
+                col: dropCol + i,
+                row: dropRow,
+            }));
+        };
+
+        selectedShip = null; // Reset the selected ship
+    } else {
+        alert("Invalid placement! Try again.");
+    };
+};
+
+/**
+ * Validates if the ship can be placed on the board
+ */
+function isValidPlacement(board, size, col, row) {
+    if (col + size > 10) return false; // Check horizontal boundaries
+
+    for (let i = 0; i < size; i++) {
+        if (board[row][col + i] !== "Empty") return false; // Check for overlap
+    };
+
+    return true;
+};
+
+/**
+ * Places a ship on the board array
+ */
+function placeShipOnBoard(board, type, size, col, row) {
+    for (let i = 0; i < size; i++) {
+        board[row][col + i] = type; // Mark the board cells as occupied by the ship
     }
 };
 
-function handlePlayerTurn (evt){
-
-}
-// Handles clicks on cells and console.log the cells information
-function handleCellClick(cell, boardId) {
-    if (boardId === "player-board") {
-        cell.style.backgroundColor = "DarkBlue";
-        cell.innerHTML = "Hit";
-        console.log(cell.innerHTML);
-    } else if (boardId === "computer-board") {
-        cell.style.backgroundColor = "DarkBlue";
-        cell.innerHTML = "Hit";
-        console.log(cell.innerHTML);
-    };
+/**
+ * Updates the board visuals after placing a ship
+ */
+function updateBoardVisuals(type, size, col, row, boardId) {
+    const board = document.querySelector(`#${boardId} .game-board`);
+    for (let i = 0; i < size; i++) {
+        const cell = board.querySelector(`#${boardId}-c${col + i}r${row}`);
+        if (cell) {
+            cell.style.backgroundColor = "gray"; // Indicate ship placement
+        }
+    }
 };
-
-//  Generates a 10x10 game board for either the Player or AI
-function generateBoard(boardId, board) {
-    const boardElement = document.querySelector(`#${boardId} .game-board`);
-
-    for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j++) {
-            const cell = document.createElement("div");
-            cell.id = `${boardId}-c${j}r${i}`;
-            cell.classList.add("cell");
-
-            if (board[i][j] !== "Empty") {
-                cell.style.backgroundColor = "blue"; // Highlight cells with ships
-            };
-
-            cell.addEventListener("click", () => handleCellClick(cell, boardId));
-            boardElement.appendChild(cell);
-        };
-    };
-};
-
 
 // Initialize the game
 init();

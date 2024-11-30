@@ -49,17 +49,21 @@ html, body {
 
 /* Ship Container Styles */
 .ship-container {
-    display: flex; /* Align ship cells horizontally */
-    margin-bottom: 10px; /* Space between ships vertically */
-    justify-content: center; /* Center-align the ships */
-    cursor: grab; /* Show grab cursor for dragging */
+    display: flex;
+    grid-template-columns: repeat(var(--size)); /* Match the number of cells */
+    padding: 0; /* Remove internal padding */
+    margin: 0; /* Remove external margins */
 }
 
 /* Individual Ship Cell Styles */
 .ship-cell {
-    background-color: gray; /* Base color for ship cells */
-    border: 2px solid black; /* Distinguish each cell with a border */
-    border-radius: 2px; /* Slightly round the edges of each cell */
+    background-color: rgb(80, 77, 77); /* Base color */
+    border: 2px solid rgb(63, 55, 55); /* Smaller border for alignment */
+    border-radius: 5px; /* Rounded edges */
+    width: 40px; /* Exact width of a single cell */
+    height: 40px; /* Exact height of a single cell */
+    margin: 0; /* Remove extra space */
+    box-sizing: border-box; /* Ensures padding/border don't increase size */
 }
 
 
@@ -129,8 +133,6 @@ html, body {
 .game-board > div {
     border: 1px solid grey; /* Cell border */
     background-color: rgb(3, 16, 20); /* Cell background */
-    width: 100%; /* Ensures cells fit within grid */
-    height: 100%; /* Ensures cells fit within grid */
 }
 
 /* Hidden Class */
@@ -141,9 +143,9 @@ html, body {
 /* Responsive Styles */
 @media (max-width: 768px) {
     .game-board {
-        grid-template-columns: repeat(10, 6vmin); /* Larger grid cells */
-        grid-template-rows: repeat(10, 6vmin); /* Larger grid cells */
-        gap: 1vmin; /* Adds spacing between cells */
+        grid-template-columns: repeat(10, 6vmin);
+        grid-template-rows: repeat(10, 6vmin);
+        gap: 1vmin;
     }
 
     .main-menu {
