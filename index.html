@@ -21,11 +21,11 @@
       <hr class="divider" />
       <div class="Player-side">
         <section class="ships-carrier">
-          <div class="Carrier-preview" draggable="true"></div>
-          <div class="Battleship-preview" draggable="true"></div>
-          <div class="Destroyer-preview" draggable="true"></div>
-          <div class="Submarine-preview" draggable="true"></div>
-          <div class="Patrol-preview" draggable="true"></div>
+          <div class="ship" data-type="Carrier">Carrier</div>
+          <div class="ship" data-type="Battleship">Battleship</div>
+          <div class="ship" data-type="Cruiser">Cruiser</div>
+          <div class="ship" data-type="Submarine">Submarine</div>
+          <div class="ship" data-type="Destroyer">Destroyer</div>
         </section>
         <section id="player-board" class="board-container">
           <h2>Player Board</h2>
@@ -36,6 +36,7 @@
       <section class="turn-indicator">
         <h2>Players Turn</h2>
       </section>
+      <button class="flip-btn">Flip</button>
       <button class="log-ship-btn">Log Player and Computer Ship Cells</button>
     </div>
   </body>

@@ -53,6 +53,7 @@ html, body {
     grid-template-columns: repeat(var(--size)); /* Match the number of cells */
     padding: 0; /* Remove internal padding */
     margin: 0; /* Remove external margins */
+    visibility: visible;
 }
 
 /* Individual Ship Cell Styles */
@@ -107,6 +108,10 @@ html, body {
     padding: 10px; /* Adds internal spacing */
     background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
     border-radius: 10px; /* Rounds corners */
+}
+
+.ship-Hide{
+    visibility: hidden;
 }
 
 .Player-side{
