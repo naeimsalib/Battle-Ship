@@ -66,6 +66,15 @@ html, body {
     box-sizing: border-box; /* Ensures padding/border don't increase size */
 }
 
+/* Computer Board Ship Visibility */
+.computer-visible .cell.ship-cell {
+    background-color: lightgray; /* Visible for testing */
+}
+
+.computer-hidden .cell.ship-cell {
+    background-color: rgb(3, 16, 20); /* Same as empty cells */
+}
+
 
 /* Button Styles */
 .start-btn {
