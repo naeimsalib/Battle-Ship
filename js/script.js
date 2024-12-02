@@ -28,6 +28,23 @@ function init() {
 };
 
 /**
+ * Render Computer Ships
+ */
+function renderAiAShips(){
+    pShips.forEach((ship) => {
+        let shipPlaced = false;
+        while(!shipPlaced){
+            const col = Math.floor(Math.random() * 10);
+            const row = Math.floor(Math.random() * 10);
+            if(isValidPlacement(aiBoard, ship.size, col, row)){
+                placeShipOnBoard(aiBoard, ship.type, ship.size, col, row);
+                shipPlaced = true;
+            }
+        }
+    });
+};
+
+/**
  * Renders the game elements
  */
 function render() {
