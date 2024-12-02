@@ -5,6 +5,7 @@ const gameArea = document.querySelector(".game-area");
 const shipsCarrier = document.querySelector(".ships-carrier");
 const turnIndicator = document.querySelector(".turn-indicator");
 const logButton = document.querySelector(".log-ship-btn");
+const cellEl = document.querySelectorAll(".cell");
 
 /*----- State Variables -----*/
 let pBoard, aiBoard, pShips,  aiShips, selectedShip = null, draggingFromBoard = false;
@@ -12,6 +13,12 @@ let pBoard, aiBoard, pShips,  aiShips, selectedShip = null, draggingFromBoard = 
 /*----- Event Listeners -----*/
 startBtn.addEventListener("click", startGame);
 logButton.addEventListener("click", logPlayerShipCells);
+cellEl.forEach(cell => {
+    cell.addEventListener("click", function() {
+        handleCellClick(cell, cell.closest(".board").id);
+        console.log(cell.closest(".board").id);
+    });
+});
 /*----- Functions -----*/
 
 /**
@@ -33,7 +40,7 @@ function init() {
 function render() {
     // Render the Board on the DOM for ach player (player and computer)
     renderBoard("player-board", pBoard);
-    renderBoard("computer-board", aiBoard, true); // Computer board is initially inactive
+    renderBoard("computer-board", aiBoard); // Computer board is initially inactive
     renderShips();
     renderAiAShips();
     updateTurnIndicator();
@@ -175,13 +182,15 @@ function updateTurnIndicator() {
 function handleCellClick(cell, boardId) {
     const col = parseInt(cell.dataset.col, 10);
     const row = parseInt(cell.dataset.row, 10);
-    const board = boardId === "player-board" ? pBoard : aiBoard;
+    const playerBoard = boardId === "player-board" ? pBoard : aiBoard;
 
-    if (board[row][col] === "Empty") {
+    if (playerBoard[row][col] === "Empty") {
         cell.style.backgroundColor = "DeepSkyBlue"; // Highlight empty cell
-    } else {
+        playerBoard[row][col] = "miss"; // Update cell value to miss
+    } else if (playerBoard[row][col] !== "miss" && playerBoard[row][col] !== "hit") {
         cell.style.backgroundColor = "red"; // Highlight ship part
-    };
+        playerBoard[row][col] = "hit"; // Update cell value to hit
+    }
 };
 
 /**
@@ -271,9 +280,9 @@ function isValidPlacement(board, size, col, row) {
 /**
  * Places a ship on the board array
  */
-function placeShipOnBoard(board, type, size, col, row) {
+function placeShipOnBoard(board, shipType, size, col, row) {
     for (let i = 0; i < size; i++) {
-        board[row][col + i] = type; // Mark the board cells as occupied by the ship
+        board[row][col + i] = shipType;
     }
 };
 
