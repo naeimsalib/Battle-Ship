@@ -7,7 +7,7 @@ const turnIndicator = document.querySelector(".turn-indicator");
 const logButton = document.querySelector(".log-ship-btn");
 
 /*----- State Variables -----*/
-let pBoard, aiBoard, pShips, selectedShip = null, draggingFromBoard = false;
+let pBoard, aiBoard, pShips,  aiShips, selectedShip = null, draggingFromBoard = false;
 
 /*----- Event Listeners -----*/
 startBtn.addEventListener("click", startGame);
@@ -28,23 +28,6 @@ function init() {
 };
 
 /**
- * Render Computer Ships
- */
-function renderAiAShips(){
-    pShips.forEach((ship) => {
-        let shipPlaced = false;
-        while(!shipPlaced){
-            const col = Math.floor(Math.random() * 10);
-            const row = Math.floor(Math.random() * 10);
-            if(isValidPlacement(aiBoard, ship.size, col, row)){
-                placeShipOnBoard(aiBoard, ship.type, ship.size, col, row);
-                shipPlaced = true;
-            }
-        }
-    });
-};
-
-/**
  * Renders the game elements
  */
 function render() {
@@ -52,7 +35,7 @@ function render() {
     renderBoard("player-board", pBoard);
     renderBoard("computer-board", aiBoard, true); // Computer board is initially inactive
     renderShips();
-    //enableDragAndDrop(); // Enable drag-and-drop functionality
+    renderAiAShips();
     updateTurnIndicator();
 };
 
@@ -112,18 +95,44 @@ function startGame() {
 };
 
 /**
+ * Render Computer Ships
+ */
+function renderAiAShips(){
+    aiShips = []; // Reset AI ships array
+    pShips.forEach((ship) => {
+        let shipPlaced = false;
+        while(!shipPlaced){
+            const col = Math.floor(Math.random() * 10);
+            const row = Math.floor(Math.random() * 10);
+            if(isValidPlacement(aiBoard, ship.size, col, row)){
+                placeShipOnBoard(aiBoard, ship.type, ship.size, col, row);
+                aiShips.push({ type: ship.type, size: ship.size, col, row });
+                shipPlaced = true;
+            }
+        }
+    });
+};
+
+/**
  * Logs all cells on the player's board that contain ships
  */
 function logPlayerShipCells() {
+    // Logs player ships cells
     console.log("Player Ship Cells:");
     pBoard.forEach((row, rowIndex) => {
         row.forEach((cell, colIndex) => {
             if (cell !== "Empty") {
                 console.log(`Ship: ${cell}, Row: ${rowIndex}, Col: ${colIndex}`);
-            };
+            }
         });
     });
-};
+
+    // Logs AI ships cells
+    console.log("AI Ship Cells:");
+    aiShips.forEach((ship) => {
+        console.log(`Ship: ${ship.type}, Size: ${ship.size}, Col: ${ship.col}, Row: ${ship.row}`);
+    });
+}
 
 /**
  * Renders ships in the ships-carrier
