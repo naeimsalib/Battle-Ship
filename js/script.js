@@ -11,6 +11,7 @@ const playButton = document.querySelector(".play-btn");
 
 /*----- State Variables -----*/
 let pBoard, aiBoard, pShips, aiShips, angle, lastPlacedShip, turn, lastMovedShip, direction, selectedShip, draggingFromBoard, shipsOnBoard;
+let aiCount, pCount;
 
 /*----- Event Listeners -----*/
 startBtn.addEventListener("click", startGame);
@@ -30,6 +31,8 @@ playButton.addEventListener("click", playButtonHandler);
  * Initializes the game state
  */
 function init() {
+    aiCount = 17;
+    pCount = 17;
     angle = 0;
     direction = null;
     lastMovedShip = null;
@@ -245,6 +248,16 @@ function updateTurnIndicator() {
     }
 }
 
+function gameOverCheck() {
+    if (aiCount === 0) {
+        alert("Player Wins!");
+        location.reload();
+    } else if (pCount === 0) {
+        alert("Computer Wins!");
+        location.reload();
+    }
+};
+
 /**
  * Handles cell clicks
  */
@@ -259,8 +272,10 @@ function handleCellClick(cell, boardId) {
     } else if (playerBoard[row][col] !== "miss" && playerBoard[row][col] !== "hit") {
         cell.style.backgroundColor = "red";
         playerBoard[row][col] = "hit";
+        boardId === "player-board" ? pCount-- : aiCount--; // Decrement the count of the hit
+        gameOverCheck();
     }
-}
+};
 
 /**
  * Handles drag start event
@@ -309,8 +324,6 @@ function handleDrop(e) {
 
     // Reset selectedShip after drop
     selectedShip = null;
-
- 
 };
 
 /**
