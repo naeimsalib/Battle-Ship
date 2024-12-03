@@ -121,7 +121,7 @@ function createShips() {
         { type: "Carrier", size: 5, cells: [], color: "Blue" },
         { type: "Battleship", size: 4, cells: [], color: "Green" },
         { type: "Destroyer", size: 3, cells: [], color: "Red" },
-        { type: "Submarine", size: 3, cells: [], color: "Black" },
+        { type: "Submarine", size: 3, cells: [], color: "DarkGray" },
         { type: "Patrol Boat", size: 2, cells: [], color: "White" }
     ];
 }
@@ -264,17 +264,18 @@ function handleDrop(e) {
     const row = parseInt(cell.dataset.row, 10);
 
     if (selectedShip) {
-        const direction = selectedShip.direction || "horizontal";
+        const direction = "horizontal"; // Default to horizontal on drop
         if (isValidPlacement(pBoard, selectedShip.size, col, row, direction)) {
-            placeShipOnBoard(pBoard, selectedShip.type, selectedShip.size, col, row, "player-board");
+            placeShipOnBoard(pBoard, selectedShip.type, selectedShip.size, col, row, "player-board", direction);
             updateBoardVisuals(selectedShip.type, selectedShip.size, col, row, "player-board");
         } else {
             alert("Invalid placement!");
         }
     }
 
+    // Reset selectedShip after drop
     selectedShip = null;
-}
+};
 
 /**
  * Flips the ship's orientation
@@ -358,9 +359,7 @@ function isValidPlacement(board, size, col, row, direction = "horizontal") {
 /**
  * Places a ship on the board
  */
-function placeShipOnBoard(board, shipType, size, col, row, boardId) {
-    const direction = selectedShip?.direction || lastPlacedShip?.direction || "horizontal";
-
+function placeShipOnBoard(board, shipType, size, col, row, boardId, direction = "horizontal") {
     for (let i = 0; i < size; i++) {
         const currentCol = col + (direction === "horizontal" ? i : 0);
         const currentRow = row + (direction === "horizontal" ? 0 : i);
@@ -390,7 +389,7 @@ function placeShipOnBoard(board, shipType, size, col, row, boardId) {
             direction,
         };
     }
-}
+};
 
 function handleDragStartFromBoard(event) {
     const shipType = event.target.dataset.shipType;
