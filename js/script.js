@@ -7,9 +7,10 @@ const turnIndicator = document.querySelector(".turn-indicator");
 const logButton = document.querySelector(".log-ship-btn");
 const cellEl = document.querySelectorAll(".cell");
 const flipButton = document.querySelector(".flip-btn");
+const playButton = document.querySelector(".play-btn");
 
 /*----- State Variables -----*/
-let pBoard, aiBoard, pShips, aiShips, angle, lastPlacedShip, lastMovedShip, direction, selectedShip = null, draggingFromBoard;
+let pBoard, aiBoard, pShips, aiShips, angle, lastPlacedShip, turn, lastMovedShip, direction, selectedShip = null, draggingFromBoard;
 
 /*----- Event Listeners -----*/
 startBtn.addEventListener("click", startGame);
@@ -19,8 +20,10 @@ cellEl.forEach(cell => {
         handleCellClick(cell, cell.closest(".board").id);
     });
 });
+
 flipButton.addEventListener("click", flip);
 
+playButton.addEventListener("click", playButtonHandler);
 /*----- Functions -----*/
 
 /**
@@ -30,6 +33,7 @@ function init() {
     angle = 0;
     direction = null;
     lastMovedShip = null;
+    turn = 1;
     lastPlacedShip = {
         type: null,
         size: null,
@@ -68,6 +72,25 @@ function createGrid() {
     return Array.from({ length: 10 }, () => Array(10).fill("Empty"));
 }
 
+function playButtonHandler() {
+    if (pShips.some(ship => ship.cells.length === 0)) {
+        alert("Place all ships on the board before playing!");
+        console.log(pShips.ship.cells.length);
+        return;
+    }
+
+    // Hide the ships carrier
+    shipsCarrier.classList.add("hidden");
+
+    // Hide the flip button
+    flipButton.classList.add("hidden");
+
+    // Hide the play button
+    playButton.classList.add("hidden");
+
+    // Update the turn indicator
+    updateTurnIndicator();
+}
 /**
  * Validates if the ship can flip
  */
@@ -210,7 +233,12 @@ function renderShips() {
  * Updates the turn indicator
  */
 function updateTurnIndicator() {
-    turnIndicator.textContent = "Place your ships";
+    turn = turn === 1 ? -1 : 1;
+    if(turn === 1) {
+    turnIndicator.textContent = "Players Turn";
+    } else {
+        turnIndicator.textContent = "Computers Turn";
+    }
 }
 
 /**
