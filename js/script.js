@@ -8,7 +8,7 @@ const logButton = document.querySelector(".log-ship-btn");
 const cellEl = document.querySelectorAll(".cell");
 const flipButton = document.querySelector(".flip-btn");
 /*----- State Variables -----*/
-let pBoard, aiBoard, pShips, aiShips, angle ,selectedShip = null, draggingFromBoard = false;
+let pBoard, aiBoard, pShips, aiShips, angle ,lastMovedShip, selectedShip = null, draggingFromBoard = false;
 
 /*----- Event Listeners -----*/
 startBtn.addEventListener("click", startGame);
@@ -29,6 +29,7 @@ flipButton.addEventListener("click", flip);
 function init() {
     // Create two empty grids for the player and computer
     angle = 0;
+    lastMovedShip = null;
     pBoard = createGrid();
     aiBoard = createGrid();
     // Create the players ships
@@ -211,6 +212,9 @@ function handleDragStart(event) {
         size: shipSize,
     };
 
+    // Track the last moved ship
+    lastMovedShip = event.target;
+
     // Check if dragging from the board
     if (event.target.parentElement.classList.contains("game-board")) {
         draggingFromBoard = true;
@@ -252,15 +256,67 @@ function handleDrop(e) {
     }
 }
 
-function flip () {
-    const optionShips = Array.from(shipsCarrier.children);
-    if(angle === 0){
-        angle = 90;
+function canFlip(startCol, startRow, size, direction) {
+    if (direction === "horizontal") {
+        if (startCol + size > 10) return false; // Out of bounds horizontally
     } else {
-        angle = 0;
+        if (startRow + size > 10) return false; // Out of bounds vertically
     }
-    optionShips.forEach(shipsCarrier => shipsCarrier.style.transform = `rotate(${angle}deg)`);
+
+    for (let i = 0; i < size; i++) {
+        const col = direction === "horizontal" ? startCol + i : startCol;
+        const row = direction === "horizontal" ? startRow : startRow + i;
+        if (pBoard[row][col] !== lastPlacedShip.type && pBoard[row][col] !== "Empty") {
+            return false; // Overlaps with another ship
+        }
+    }
+
+    return true;
+}
+
+
+function flip() {
+    if (!lastPlacedShip) {
+        console.warn("No ship to flip. Place a ship on the board first.");
+        return;
+    }
+
+    const { startCol, startRow, size, direction } = lastPlacedShip;
+
+    // Determine the new direction
+    const newDirection = direction === "horizontal" ? "vertical" : "horizontal";
+    const boardEl = document.querySelector("#player-board .game-board");
+
+    // Check if the flip is valid
+    if (!canFlip(startCol, startRow, size, newDirection)) {
+        alert("Cannot flip ship in the current position.");
+        return;
+    }
+
+    // Clear the previous cells
+    for (let i = 0; i < size; i++) {
+        const cellId =
+            direction === "horizontal"
+                ? `#player-board-c${startCol + i}r${startRow}`
+                : `#player-board-c${startCol}r${startRow + i}`;
+        const cell = boardEl.querySelector(cellId);
+        if (cell) cell.style.backgroundColor = ""; // Reset the cell color
+    }
+
+    // Apply the new direction
+    for (let i = 0; i < size; i++) {
+        const cellId =
+            newDirection === "horizontal"
+                ? `#player-board-c${startCol + i}r${startRow}`
+                : `#player-board-c${startCol}r${startRow + i}`;
+        const cell = boardEl.querySelector(cellId);
+        if (cell) cell.style.backgroundColor = "Gray"; // Set the cell color for the new direction
+    }
+
+    // Update the direction in the lastPlacedShip
+    lastPlacedShip.direction = newDirection;
 };
+
 /**
  * Validates if the ship can be placed on the board
  */
@@ -282,14 +338,22 @@ function placeShipOnBoard(board, shipType, size, col, row) {
         board[row][col + i] = shipType;
     }
 
+    // Track the last placed ship's details
+    lastPlacedShip = {
+        type: shipType,
+        size: size,
+        startCol: col,
+        startRow: row,
+        direction: "horizontal", // Default to horizontal
+    };
+
     // Find the specific ship in the ships carrier
     const shipElement = document.querySelector(`.ships-carrier .ship[data-type="${shipType}"]`);
 
     if (shipElement) {
         shipElement.remove(); // Remove the specific ship from the DOM
     } else {
-       console.error(`Ship of type ${shipType} not found in the ships carrier`);
-        //console.log(`Available ships:`, document.querySelectorAll('.ships-carrier .ship'));
+        console.error(`Ship of type ${shipType} not found in the ships carrier`);
     }
 }
 
