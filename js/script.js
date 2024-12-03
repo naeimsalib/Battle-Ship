@@ -369,10 +369,6 @@ function handleDrop(e) {
                 shipsOnBoard += 1; // Increment shipsOnBoard count only for the first placement
                 console.log(`Ship placed: ${selectedShip.type}, Ships on board: ${shipsOnBoard}`);
                 shipElement.onBoard = true;
-                // Remove the ship element from the container
-                // if (shipElement) {
-                //     shipElement.remove();
-                // }
             };
         } else {
             alert("Invalid placement!");
