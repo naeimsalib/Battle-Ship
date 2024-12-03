@@ -4,16 +4,14 @@ const startBtn = document.querySelector(".start-btn");
 const gameArea = document.querySelector(".game-area");
 const shipsCarrier = document.querySelector(".ships-carrier");
 const turnIndicator = document.querySelector(".turn-indicator");
-const logButton = document.querySelector(".log-ship-btn");
-const cellEl = document.querySelectorAll(".cell");
 const flipButton = document.querySelector(".flip-btn");
 const playButton = document.querySelector(".play-btn");
 
 /*----- State Variables -----*/
-let pBoard, aiBoard, pShips, aiShips, angle, lastPlacedShip, turn, lastMovedShip, direction, selectedShip, draggingFromBoard, shipsOnBoard;
-let aiCount, pCount;
-let isComputerTurn;
-let gameStarted;
+let pBoard, aiBoard, pShips, aiShips, lastPlacedShip, turn, direction, selectedShip, shipsOnBoard;
+let aiCount, pCount; // Tracks the count of cells of ships there is to determine win and loss
+let isComputerTurn; // Tracks who's turn it is so player cannot hit until the computer has played.
+let gameStarted; // Tracks if the game started or not
 let lastComputerHit = null; // Track the last hit made by the computer
 let computerHitDirection = null; // Track the direction of the hits (Horizontal or Vertical)
 let computerHits = []; // Track all hits made by the computer on the same ship
@@ -33,13 +31,10 @@ function init() {
     isComputerTurn = false;
     lastComputerHit = null;
     computerHitDirection = null;
-    // isFirstPlacement = true;
     computerHits = [];
     aiCount = 17;
     pCount = 17;
-    angle = 0;
     direction = null;
-    lastMovedShip = null;
     selectedShip = null
     turn = 1;
     shipsOnBoard = 0;
@@ -51,16 +46,15 @@ function init() {
         direction: null,
     };
     selectedShip = null;
-    draggingFromBoard = false;
 
     pBoard = createGrid();
     aiBoard = createGrid();
 
     pShips = createShips();
-    aiShips = []; // Initialize the AI ships array
+    aiShips = [];
 
     render();
-    renderAiAShips(); // Place AI ships without affecting player's board
+    renderAiAShips();
     addBoardEventListeners();
 };
 
@@ -429,10 +423,6 @@ function handleDragStart(event) {
         type: shipType,
         size: shipSize,
     };
-
-    lastMovedShip = event.target;
-
-    draggingFromBoard = false;
 }
 
 /**
