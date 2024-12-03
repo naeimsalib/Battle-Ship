@@ -58,7 +58,7 @@ function init() {
     render();
     renderAiAShips(); // Place AI ships without affecting player's board
     addBoardEventListeners();
-}
+};
 
 /**
  * Renders the game elements
@@ -77,7 +77,9 @@ function createGrid() {
     return Array.from({ length: 10 }, () => Array(10).fill("Empty"));
 };
 
-
+/*
+    * Handles the play button click event
+*/
 function playButtonHandler() {
     console.log(shipsOnBoard);
     if (shipsOnBoard !== 5) {
@@ -93,7 +95,8 @@ function playButtonHandler() {
 
     // Hide the play button
     playButton.classList.add("hidden");
-
+    // Starts the game with players turn
+    turn =1;
     // Update the turn indicator
     updateTurnIndicator();
 };
@@ -114,7 +117,43 @@ function canFlip(startCol, startRow, size, newDirection) {
     }
 
     return true;
-}
+};
+
+/*
+* Function to handle the computer's turn
+* Checks if the cells on the player board is valid or not and if it is, then does the hit
+*/
+function computerTurn() {
+    let col, row;
+    let validMove = false;
+
+    // Find a valid move
+    while (!validMove) {
+        col = Math.floor(Math.random() * 10);
+        row = Math.floor(Math.random() * 10);
+
+        if (pBoard[row][col] !== "miss" && pBoard[row][col] !== "hit") {
+            validMove = true;
+        }
+    }
+
+    const cell = document.querySelector(`#player-board-c${col}r${row}`);
+
+    if (pBoard[row][col] === "Empty") {
+        cell.style.backgroundColor = "DeepSkyBlue";
+        pBoard[row][col] = "miss";
+    } else {
+        cell.style.backgroundColor = "red";
+        pBoard[row][col] = "hit";
+        pCount--;
+    }
+
+    // Check for game over
+    gameOverCheck();
+
+    // Update turn indicator
+    updateTurnIndicator();
+};
 
 /**
  * Renders a board on the DOM for the given board ID
@@ -141,7 +180,7 @@ function renderBoard(boardId, board, disableClicks = false) {
             boardEl.appendChild(cellEl);
         });
     });
-}
+}; 
 
 /**
  * Creates ship data
@@ -240,13 +279,14 @@ function renderShips() {
  * Updates the turn indicator
  */
 function updateTurnIndicator() {
-    turn = turn === 1 ? -1 : 1;
-    if(turn === 1) {
-    turnIndicator.textContent = "Players Turn";
+   // turn = turn === 1 ? -1 : 1;
+    if (turn === 1) {
+        turnIndicator.textContent = "Player's Turn";
     } else {
-        turnIndicator.textContent = "Computers Turn";
+        turnIndicator.textContent = "Computer's Turn";
+        setTimeout(computerTurn, 1000); // Give a slight delay before the computer makes a move
     }
-}
+};
 
 function gameOverCheck() {
     if (aiCount === 0) {
