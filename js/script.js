@@ -71,11 +71,9 @@ function render() {
 function createGrid() {
     return Array.from({ length: 10 }, () => Array(10).fill("Empty"));
 }
-
 function playButtonHandler() {
     if (pShips.some(ship => ship.cells.length === 0)) {
         alert("Place all ships on the board before playing!");
-        console.log(pShips.ship.cells.length);
         return;
     }
 
@@ -90,7 +88,8 @@ function playButtonHandler() {
 
     // Update the turn indicator
     updateTurnIndicator();
-}
+};
+
 /**
  * Validates if the ship can flip
  */
@@ -227,7 +226,7 @@ function renderShips() {
 
         shipsCarrier.appendChild(shipEl);
     });
-}
+};
 
 /**
  * Updates the turn indicator
@@ -388,17 +387,20 @@ function isValidPlacement(board, size, col, row, direction = "horizontal") {
  * Places a ship on the board
  */
 function placeShipOnBoard(board, shipType, size, col, row, boardId, direction = "horizontal") {
+    const ship = pShips.find(s => s.type === shipType);
+    ship.cells = []; // Reset cells array
+
     for (let i = 0; i < size; i++) {
         const currentCol = col + (direction === "horizontal" ? i : 0);
         const currentRow = row + (direction === "horizontal" ? 0 : i);
 
         board[currentRow][currentCol] = shipType;
+        ship.cells.push({ col: currentCol, row: currentRow }); // Update cells array
 
         // Only update DOM for player board
         if (boardId === "player-board") {
             const cell = document.querySelector(`#${boardId}-c${currentCol}r${currentRow}`);
             if (cell) {
-                const ship = pShips.find((s) => s.type === shipType);
                 cell.classList.add("ship-cell");
                 cell.style.backgroundColor = ship?.color || "Gray";
                 cell.setAttribute("draggable", "true");
@@ -416,8 +418,14 @@ function placeShipOnBoard(board, shipType, size, col, row, boardId, direction = 
             startRow: row,
             direction,
         };
+
+        // Hide the ship element from the ship carrier container
+        const shipElement = document.querySelector(`.ship-container[data-ship="${shipType}"]`);
+        if (shipElement) {
+            shipElement.classList.add("ship-Hide");
+        }
     }
-};
+}
 
 function handleDragStartFromBoard(event) {
     const shipType = event.target.dataset.shipType;
