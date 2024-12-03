@@ -10,7 +10,7 @@ const flipButton = document.querySelector(".flip-btn");
 const playButton = document.querySelector(".play-btn");
 
 /*----- State Variables -----*/
-let pBoard, aiBoard, pShips, aiShips, angle, lastPlacedShip, turn, lastMovedShip, direction, selectedShip, draggingFromBoard, shipsOnBoard;
+let pBoard, aiBoard, pShips, aiShips, angle, lastPlacedShip, turn, lastMovedShip, direction, selectedShip, draggingFromBoard, shipsOnBoard, isFirstPlacement;
 let aiCount, pCount;
 
 /*----- Event Listeners -----*/
@@ -31,6 +31,7 @@ playButton.addEventListener("click", playButtonHandler);
  * Initializes the game state
  */
 function init() {
+    isFirstPlacement = true;
     aiCount = 17;
     pCount = 17;
     angle = 0;
@@ -81,8 +82,8 @@ function createGrid() {
     * Handles the play button click event
 */
 function playButtonHandler() {
-    console.log(shipsOnBoard);
-    if (shipsOnBoard !== 5) {
+    console.log(`Ships on board: ${shipsOnBoard}, Total ships: ${pShips.length}`);
+    if (shipsOnBoard !== pShips.length) {
         alert("Place all ships on the board before playing!");
         return;
     }
@@ -95,11 +96,12 @@ function playButtonHandler() {
 
     // Hide the play button
     playButton.classList.add("hidden");
-    // Starts the game with players turn
-    turn =1;
+
+    // Start the game with player's turn
+    turn = 1;
     // Update the turn indicator
     updateTurnIndicator();
-};
+}
 
 /**
  * Validates if the ship can flip
@@ -187,11 +189,11 @@ function renderBoard(boardId, board, disableClicks = false) {
  */
 function createShips() {
     return [
-        { type: "Carrier", size: 5, cells: [], color: "Blue" },
-        { type: "Battleship", size: 4, cells: [], color: "Green" },
-        { type: "Destroyer", size: 3, cells: [], color: "Red" },
-        { type: "Submarine", size: 3, cells: [], color: "DarkGray" },
-        { type: "Patrol Boat", size: 2, cells: [], color: "White" }
+        { type: "Carrier", size: 5, cells: [], color: "Blue", onBoard: false},
+        { type: "Battleship", size: 4, cells: [], color: "Green", onBoard: false},
+        { type: "Destroyer", size: 3, cells: [], color: "Purple", onBoard: false},
+        { type: "Submarine", size: 3, cells: [], color: "DarkGray", onBoard: false},
+        { type: "Patrol Boat", size: 2, cells: [], color: "White", onBoard: false}
     ];
 }
 
@@ -279,13 +281,13 @@ function renderShips() {
  * Updates the turn indicator
  */
 function updateTurnIndicator() {
-   // turn = turn === 1 ? -1 : 1;
     if (turn === 1) {
         turnIndicator.textContent = "Player's Turn";
     } else {
         turnIndicator.textContent = "Computer's Turn";
         setTimeout(computerTurn, 1000); // Give a slight delay before the computer makes a move
     }
+    turn = turn === 1 ? -1 : 1; // Switch turns
 };
 
 function gameOverCheck() {
@@ -312,9 +314,12 @@ function handleCellClick(cell, boardId) {
     } else if (playerBoard[row][col] !== "miss" && playerBoard[row][col] !== "hit") {
         cell.style.backgroundColor = "red";
         playerBoard[row][col] = "hit";
-        boardId === "player-board" ? pCount-- : aiCount--; // Decrement the count of the hit
+        boardId === "player-board" ? pCount-- : aiCount--;
         gameOverCheck();
     }
+
+    // Switch turns
+    updateTurnIndicator();
 };
 
 /**
@@ -353,10 +358,22 @@ function handleDrop(e) {
     if (selectedShip) {
         const direction = "horizontal"; // Default to horizontal on drop
         if (isValidPlacement(pBoard, selectedShip.size, col, row, direction)) {
+            const ship = pShips.find(s => s.type === selectedShip.type);
+            const isFirstPlacement = ship.cells.length === 0;
+
             placeShipOnBoard(pBoard, selectedShip.type, selectedShip.size, col, row, "player-board", direction);
             updateBoardVisuals(selectedShip.type, selectedShip.size, col, row, "player-board");
-               // Adds 1 to the shipsOnBoard Count
-                shipsOnBoard += 1;
+
+            const shipElement = document.querySelector(`.ship-container[data-ship="${selectedShip.type}"]`);
+            if (!shipElement.onBoard) {
+                shipsOnBoard += 1; // Increment shipsOnBoard count only for the first placement
+                console.log(`Ship placed: ${selectedShip.type}, Ships on board: ${shipsOnBoard}`);
+                shipElement.onBoard = true;
+                // Remove the ship element from the container
+                // if (shipElement) {
+                //     shipElement.remove();
+                // }
+            };
         } else {
             alert("Invalid placement!");
         }
@@ -364,7 +381,7 @@ function handleDrop(e) {
 
     // Reset selectedShip after drop
     selectedShip = null;
-};
+}
 
 /**
  * Flips the ship's orientation
