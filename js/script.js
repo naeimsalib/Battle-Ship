@@ -8,7 +8,7 @@ const logButton = document.querySelector(".log-ship-btn");
 const cellEl = document.querySelectorAll(".cell");
 const flipButton = document.querySelector(".flip-btn");
 /*----- State Variables -----*/
-let pBoard, aiBoard, pShips, aiShips, angle ,lastPlacedShip, lastMovedShip, selectedShip = null, draggingFromBoard;
+let pBoard, aiBoard, pShips, aiShips, angle ,lastPlacedShip, lastMovedShip,direction,  selectedShip = null, draggingFromBoard;
 
 /*----- Event Listeners -----*/
 startBtn.addEventListener("click", startGame);
@@ -29,8 +29,15 @@ flipButton.addEventListener("click", flip);
 function init() {
     // Variable declaration at start of game
     angle = 0;
+    direction = null;
     lastMovedShip = null;
-    lastPlacedShip = null;
+    lastPlacedShip = {
+        type: null,
+        size: null,
+        startCol: null,
+        startRow: null,
+        direction: null, // Preserve the current direction
+    };
     selectedShip = null;
     draggingFromBoard = false;
     // Create two empty grids for the player and computer
@@ -47,13 +54,11 @@ function init() {
  * Renders the game elements
  */
 function render() {
-    // Render the Board on the DOM for each player (player and computer)
-    renderBoard("player-board", pBoard);
-    renderBoard("computer-board", aiBoard); // Computer board is initially inactive
-    renderShips();
+    renderBoard("player-board", pBoard); // Render empty player board
+    renderBoard("computer-board", aiBoard); // Render computer board with AI ships
+    renderShips(); // Add draggable ships for the player
     console.log("Rendered ships in ships-carrier:", document.querySelectorAll(".ships-carrier .ship"));
-    renderAiAShips();
-    updateTurnIndicator();
+    updateTurnIndicator(); // Show placement instructions
 }
 
 /**
@@ -116,16 +121,15 @@ function startGame() {
  */
 function renderAiAShips() {
     aiShips = []; // Reset AI ships array
-    const aiShipsCopy = JSON.parse(JSON.stringify(pShips)); // Clone player ships for AI
-    aiShipsCopy.forEach((ship) => {
-        let shipPlaced = false;
-        while (!shipPlaced) {
+    pShips.forEach((ship) => {
+        let placed = false;
+        while (!placed) {
             const col = Math.floor(Math.random() * 10);
             const row = Math.floor(Math.random() * 10);
             if (isValidPlacement(aiBoard, ship.size, col, row)) {
                 placeShipOnBoard(aiBoard, ship.type, ship.size, col, row);
                 aiShips.push({ type: ship.type, size: ship.size, col, row });
-                shipPlaced = true;
+                placed = true;
             }
         }
     });
@@ -290,8 +294,8 @@ function canFlip(startCol, startRow, size, direction) {
 */
 
 function flip() {
-    if (!lastPlacedShip) {
-        console.warn("No ship to flip. Place a ship on the board first.");
+    if (!lastPlacedShip || !lastPlacedShip.type) {
+        alert("No ship to flip. Place a ship on the board first.");
         return;
     }
 
@@ -299,7 +303,6 @@ function flip() {
 
     // Determine the new direction
     const newDirection = direction === "horizontal" ? "vertical" : "horizontal";
-    const boardEl = document.querySelector("#player-board .game-board");
 
     // Check if the flip is valid
     if (!canFlip(startCol, startRow, size, newDirection)) {
@@ -307,36 +310,66 @@ function flip() {
         return;
     }
 
-    // Clear the previous cells in the logical board (`pBoard`) and visuals
-    for (let i = 0; i < size; i++) {
-        const col = direction === "horizontal" ? startCol + i : startCol;
-        const row = direction === "horizontal" ? startRow : startRow + i;
+    // Clear the current position of the ship
+    clearShipFromBoard(startCol, startRow, size, direction);
 
-        pBoard[row][col] = "Empty"; // Mark the cell as empty in the logical board
-
-        const cellId = `#player-board-c${col}r${row}`;
-        const cell = boardEl.querySelector(cellId);
-        if (cell) cell.style.backgroundColor = ""; // Reset the cell visually
-    }
-
-    // Apply the new direction
-    for (let i = 0; i < size; i++) {
-        const col = newDirection === "horizontal" ? startCol + i : startCol;
-        const row = newDirection === "horizontal" ? startRow : startRow + i;
-
-        pBoard[row][col] = lastPlacedShip.type; // Mark the cell as occupied in the logical board
-
-        const cellId = `#player-board-c${col}r${row}`;
-        const cell = boardEl.querySelector(cellId);
-        if (cell) cell.style.backgroundColor = "Gray"; // Set the cell visually
-    }
+    // Update the logical board and UI with the new orientation
+    applyNewOrientation(startCol, startRow, size, newDirection);
 
     // Update the direction in `lastPlacedShip`
     lastPlacedShip.direction = newDirection;
 
-    // Update the selected ship's direction (if any)
-    if (selectedShip) {
+    // Update the selected ship's direction if applicable
+    if (selectedShip && selectedShip.type === lastPlacedShip.type) {
         selectedShip.direction = newDirection;
+    }
+}
+
+// Clear the current position of the ship from the logical board and UI
+function clearShipFromBoard(startCol, startRow, size, direction) {
+    for (let i = 0; i < size; i++) {
+        const col = direction === "horizontal" ? startCol + i : startCol;
+        const row = direction === "horizontal" ? startRow : startRow + i;
+
+        pBoard[row][col] = "Empty"; // Clear logical board state
+
+        const cellId = `#player-board-c${col}r${row}`;
+        const cell = document.querySelector(cellId);
+        if (cell) {
+            cell.style.backgroundColor = ""; // Clear cell visually
+        }
+    }
+}
+
+// Apply the new orientation of the ship to the logical board and UI
+function applyNewOrientation(startCol, startRow, size, direction) {
+    const ship = pShips.find((s) => s.type === lastPlacedShip.type);
+
+    for (let i = 0; i < size; i++) {
+        const col = direction === "horizontal" ? startCol + i : startCol;
+        const row = direction === "horizontal" ? startRow : startRow + i;
+
+        pBoard[row][col] = lastPlacedShip.type; // Mark cell in the logical board
+
+        const cellId = `#player-board-c${col}r${row}`;
+        const cell = document.querySelector(cellId);
+        if (cell) {
+            cell.style.backgroundColor = ship?.color || "Gray"; // Apply the ship's color
+        }
+    }
+}
+
+
+// Clear the ship's current cells from the board
+function clearShipFromBoard(startCol, startRow, size, direction) {
+    for (let i = 0; i < size; i++) {
+        const col = direction === "horizontal" ? startCol + i : startCol;
+        const row = direction === "horizontal" ? startRow : startRow + i;
+
+        pBoard[row][col] = "Empty"; // Clear logical board state
+        const cellId = `#player-board-c${col}r${row}`;
+        const cell = document.querySelector(cellId);
+        if (cell) cell.style.backgroundColor = ""; // Clear visuals
     }
 };
 
@@ -372,7 +405,9 @@ function placeShipOnBoard(board, shipType, size, col, row) {
 
         const cell = document.querySelector(`#player-board-c${currentCol}r${currentRow}`);
         if (cell) {
+            const ship = pShips.find((s) => s.type === shipType);
             cell.classList.add("ship-cell");
+            cell.style.backgroundColor = ship?.color || "Gray"; // Apply the ship's color
             cell.setAttribute("draggable", "true");
             cell.dataset.shipType = shipType;
             cell.addEventListener("dragstart", handleDragStartFromBoard);
@@ -387,7 +422,8 @@ function placeShipOnBoard(board, shipType, size, col, row) {
         startRow: row,
         direction, // Preserve the current direction
     };
-};
+}
+
 
 function handleDragStartFromBoard(event) {
     const shipType = event.target.dataset.shipType;
@@ -398,19 +434,8 @@ function handleDragStartFromBoard(event) {
     if (ship && lastPlacedShip?.type === shipType) {
         const { startCol, startRow, size, direction } = lastPlacedShip;
 
-        // Clear the ship's current position on the board
-        for (let i = 0; i < size; i++) {
-            const col = direction === "horizontal" ? startCol + i : startCol;
-            const row = direction === "horizontal" ? startRow : startRow + i;
-
-            pBoard[row][col] = "Empty"; // Mark cell as empty
-            const cell = document.querySelector(`#player-board-c${col}r${row}`);
-            if (cell) {
-                cell.style.backgroundColor = ""; // Reset visual
-                cell.removeAttribute("draggable"); // Disable dragging temporarily
-                cell.removeEventListener("dragstart", handleDragStartFromBoard);
-            }
-        }
+        // Clear the ship's current position from the board
+        clearShipFromBoard(startCol, startRow, size, direction);
 
         // Track the selected ship and its direction
         selectedShip = { ...ship, direction };
@@ -437,13 +462,15 @@ function addBoardEventListeners() {
  */
 function updateBoardVisuals(type, size, col, row, boardId) {
     const board = document.querySelector(`#${boardId} .game-board`);
+    const ship = pShips.find((s) => s.type === type);
+
     for (let i = 0; i < size; i++) {
         const cell = board.querySelector(`#${boardId}-c${col + i}r${row}`);
         if (cell) {
-            cell.style.backgroundColor = "Gray"; // Indicate ship placement
+            cell.style.backgroundColor = ship?.color || "Gray"; // Indicate ship placement
         }
     }
-}
+};
 
 // Initialize the game
 init();
