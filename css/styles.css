@@ -42,8 +42,19 @@ html, body {
     background-color: lightblue; /* Sets background color */
 }
 
+.roboto-mono-title {
+    font-family: "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+  }
+
 .turn-indicator {
-    color: white;
+    color: rgb(196, 149, 149);
+    border: 1px solid rgb(253, 253, 253);
+    padding: 1px;
+    margin: 10px;
+    font-family: "Roboto Mono", monospace;
     font-size: 50px;
 }
 
@@ -71,6 +82,7 @@ html, body {
     padding: 10px 20px; /* Adds internal spacing */
     font-size: 1rem; /* Sets button font size */
     cursor: pointer; /* Changes cursor on hover */
+    border-radius: 15px; /* Rounds button corners */
 }
 
 .flip-btn {

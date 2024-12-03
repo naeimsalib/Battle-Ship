@@ -36,7 +36,7 @@ function init() {
     pCount = 17;
     direction = null;
     selectedShip = null
-    turn = 1;
+    turn = 0;
     shipsOnBoard = 0;
     lastPlacedShip = {
         type: null,
@@ -368,10 +368,12 @@ function updateTurnIndicator() {
     if (turn === 1) {
         turnIndicator.textContent = "Player's Turn";
         isComputerTurn = false; // It's the player's turn
-    } else {
+    } else if (turn === -1) {
         turnIndicator.textContent = "Computer's Turn";
         isComputerTurn = true; // It's the computer's turn
         setTimeout(computerTurn, 1000); // Give a slight delay before the computer makes a move
+    } else {
+        turnIndicator.textContent = " ";
     }
     turn = turn === 1 ? -1 : 1; // Switch turns
 }
