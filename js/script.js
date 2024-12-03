@@ -10,20 +10,18 @@ const flipButton = document.querySelector(".flip-btn");
 const playButton = document.querySelector(".play-btn");
 
 /*----- State Variables -----*/
-let pBoard, aiBoard, pShips, aiShips, angle, lastPlacedShip, turn, lastMovedShip, direction, selectedShip, draggingFromBoard, shipsOnBoard, isFirstPlacement;
+let pBoard, aiBoard, pShips, aiShips, angle, lastPlacedShip, turn, lastMovedShip, direction, selectedShip, draggingFromBoard, shipsOnBoard;
 let aiCount, pCount;
+let isComputerTurn;
+let gameStarted;
+let lastComputerHit = null; // Track the last hit made by the computer
+let computerHitDirection = null; // Track the direction of the hits (Horizontal or Vertical)
+let computerHits = []; // Track all hits made by the computer on the same ship
+let reverseDirection = false; // Track if the computer should reverse direction
 
 /*----- Event Listeners -----*/
 startBtn.addEventListener("click", startGame);
-logButton.addEventListener("click", logPlayerShipCells);
-cellEl.forEach(cell => {
-    cell.addEventListener("click", function () {
-        handleCellClick(cell, cell.closest(".board").id);
-    });
-});
-
 flipButton.addEventListener("click", flip);
-
 playButton.addEventListener("click", playButtonHandler);
 /*----- Functions -----*/
 
@@ -31,7 +29,12 @@ playButton.addEventListener("click", playButtonHandler);
  * Initializes the game state
  */
 function init() {
-    isFirstPlacement = true;
+    gameStarted = false;
+    isComputerTurn = false;
+    lastComputerHit = null;
+    computerHitDirection = null;
+    // isFirstPlacement = true;
+    computerHits = [];
     aiCount = 17;
     pCount = 17;
     angle = 0;
@@ -82,7 +85,6 @@ function createGrid() {
     * Handles the play button click event
 */
 function playButtonHandler() {
-    console.log(`Ships on board: ${shipsOnBoard}, Total ships: ${pShips.length}`);
     if (shipsOnBoard !== pShips.length) {
         alert("Place all ships on the board before playing!");
         return;
@@ -99,9 +101,10 @@ function playButtonHandler() {
 
     // Start the game with player's turn
     turn = 1;
+    gameStarted = true; // Set the gameStarted flag to true
     // Update the turn indicator
     updateTurnIndicator();
-}
+};
 
 /**
  * Validates if the ship can flip
@@ -126,16 +129,122 @@ function canFlip(startCol, startRow, size, newDirection) {
 * Checks if the cells on the player board is valid or not and if it is, then does the hit
 */
 function computerTurn() {
+    if (!gameStarted) return; // Prevent any moves before the game starts
+
     let col, row;
     let validMove = false;
 
-    // Find a valid move
-    while (!validMove) {
-        col = Math.floor(Math.random() * 10);
-        row = Math.floor(Math.random() * 10);
+    // If there is a previous hit, target around that hit
+    if (lastComputerHit) {
+        const { col: lastCol, row: lastRow } = lastComputerHit;
 
-        if (pBoard[row][col] !== "miss" && pBoard[row][col] !== "hit") {
-            validMove = true;
+        // If there are multiple hits, determine the direction and target accordingly
+        if (computerHits.length > 1) {
+            const firstHit = computerHits[0];
+            const secondHit = computerHits[1];
+
+            // Determine the direction based on the first two hits
+            computerHitDirection = firstHit.col === secondHit.col ? "Vertical" : "Horizontal";
+
+            // Target the next cell in the determined direction
+            if (computerHitDirection === "Horizontal") {
+                if (!reverseDirection) {
+                    // Target left or right
+                    const leftCol = lastCol - 1;
+                    const rightCol = lastCol + 1;
+
+                    if (rightCol < 10 && pBoard[lastRow][rightCol] !== "miss" && pBoard[lastRow][rightCol] !== "hit") {
+                        col = rightCol;
+                        row = lastRow;
+                        validMove = true;
+                    } else if (leftCol >= 0 && pBoard[lastRow][leftCol] !== "miss" && pBoard[lastRow][leftCol] !== "hit") {
+                        col = leftCol;
+                        row = lastRow;
+                        validMove = true;
+                    } else {
+                        reverseDirection = true;
+                    }
+                } else {
+                    // Reverse direction
+                    const leftCol = lastCol - 1;
+                    const rightCol = lastCol + 1;
+
+                    if (leftCol >= 0 && pBoard[lastRow][leftCol] !== "miss" && pBoard[lastRow][leftCol] !== "hit") {
+                        col = leftCol;
+                        row = lastRow;
+                        validMove = true;
+                    } else if (rightCol < 10 && pBoard[lastRow][rightCol] !== "miss" && pBoard[lastRow][rightCol] !== "hit") {
+                        col = rightCol;
+                        row = lastRow;
+                        validMove = true;
+                    }
+                }
+            } else {
+                if (!reverseDirection) {
+                    // Target up or down
+                    const upRow = lastRow - 1;
+                    const downRow = lastRow + 1;
+
+                    if (downRow < 10 && pBoard[downRow][lastCol] !== "miss" && pBoard[downRow][lastCol] !== "hit") {
+                        col = lastCol;
+                        row = downRow;
+                        validMove = true;
+                    } else if (upRow >= 0 && pBoard[upRow][lastCol] !== "miss" && pBoard[upRow][lastCol] !== "hit") {
+                        col = lastCol;
+                        row = upRow;
+                        validMove = true;
+                    } else {
+                        reverseDirection = true;
+                    }
+                } else {
+                    // Reverse direction
+                    const upRow = lastRow - 1;
+                    const downRow = lastRow + 1;
+
+                    if (upRow >= 0 && pBoard[upRow][lastCol] !== "miss" && pBoard[upRow][lastCol] !== "hit") {
+                        col = lastCol;
+                        row = upRow;
+                        validMove = true;
+                    } else if (downRow < 10 && pBoard[downRow][lastCol] !== "miss" && pBoard[downRow][lastCol] !== "hit") {
+                        col = lastCol;
+                        row = downRow;
+                        validMove = true;
+                    }
+                }
+            }
+        } else {
+            // Target all four sides around the last hit
+            const potentialTargets = [
+                { col: lastCol - 1, row: lastRow }, // Left
+                { col: lastCol + 1, row: lastRow }, // Right
+                { col: lastCol, row: lastRow - 1 }, // Up
+                { col: lastCol, row: lastRow + 1 }  // Down
+            ];
+
+            // Shuffle the potential targets to randomize the selection
+            potentialTargets.sort(() => Math.random() - 0.5);
+
+            for (const target of potentialTargets) {
+                if (target.col >= 0 && target.col < 10 && target.row >= 0 && target.row < 10 &&
+                    pBoard[target.row][target.col] !== "miss" && pBoard[target.row][target.col] !== "hit") {
+                    col = target.col;
+                    row = target.row;
+                    validMove = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    // If no valid move found around the last hit, choose a random cell
+    if (!validMove) {
+        while (!validMove) {
+            col = Math.floor(Math.random() * 10);
+            row = Math.floor(Math.random() * 10);
+
+            if (pBoard[row][col] !== "miss" && pBoard[row][col] !== "hit") {
+                validMove = true;
+            }
         }
     }
 
@@ -144,16 +253,22 @@ function computerTurn() {
     if (pBoard[row][col] === "Empty") {
         cell.style.backgroundColor = "DeepSkyBlue";
         pBoard[row][col] = "miss";
+        reverseDirection = true; // Reverse direction on miss
     } else {
         cell.style.backgroundColor = "red";
         pBoard[row][col] = "hit";
         pCount--;
+
+        // Track the hit
+        lastComputerHit = { col, row };
+        computerHits.push({ col, row });
+        reverseDirection = false; // Continue in the same direction on hit
     }
 
     // Check for game over
     gameOverCheck();
 
-    // Update turn indicator
+    // Switch turns back to the player
     updateTurnIndicator();
 };
 
@@ -223,32 +338,7 @@ function renderAiAShips() {
             }
         }
     });
-}
-
-/**
- * Logs all cells on the player's board that contain ships
- */
-function logPlayerShipCells() {
-    // Logs player ships cells
-    console.log("Player Ship Cells:");
-    pBoard.forEach((row, rowIndex) => {
-        row.forEach((cell, colIndex) => {
-            if (cell !== "Empty") {
-                console.log(`Ship: ${cell}, Row: ${rowIndex}, Col: ${colIndex}`);
-            }
-        });
-    });
-
-    // Logs AI ships cells
-    console.log("AI Ship Cells:");
-    if (aiShips.length === 0) {
-        console.log("No AI ships placed.");
-        return;
-    }
-    aiShips.forEach((ship) => {
-        console.log(`Ship: ${ship.type}, Size: ${ship.size}, Col: ${ship.col}, Row: ${ship.row}`);
-    });
-}
+};
 
 /**
  * Renders ships in the ships-carrier
@@ -283,12 +373,14 @@ function renderShips() {
 function updateTurnIndicator() {
     if (turn === 1) {
         turnIndicator.textContent = "Player's Turn";
+        isComputerTurn = false; // It's the player's turn
     } else {
         turnIndicator.textContent = "Computer's Turn";
+        isComputerTurn = true; // It's the computer's turn
         setTimeout(computerTurn, 1000); // Give a slight delay before the computer makes a move
     }
     turn = turn === 1 ? -1 : 1; // Switch turns
-};
+}
 
 function gameOverCheck() {
     if (aiCount === 0) {
@@ -304,6 +396,10 @@ function gameOverCheck() {
  * Handles cell clicks
  */
 function handleCellClick(cell, boardId) {
+    if (!gameStarted) return; // Prevent any moves before the game starts
+    if (isComputerTurn) return; // Prevent the player from making a move during the computer's turn
+    if (boardId === "player-board") return; // Prevent the player from hitting their own cells
+
     const col = parseInt(cell.dataset.col, 10);
     const row = parseInt(cell.dataset.row, 10);
     const playerBoard = boardId === "player-board" ? pBoard : aiBoard;
@@ -320,7 +416,7 @@ function handleCellClick(cell, boardId) {
 
     // Switch turns
     updateTurnIndicator();
-};
+}
 
 /**
  * Handles drag start event
@@ -358,16 +454,11 @@ function handleDrop(e) {
     if (selectedShip) {
         const direction = "horizontal"; // Default to horizontal on drop
         if (isValidPlacement(pBoard, selectedShip.size, col, row, direction)) {
-            const ship = pShips.find(s => s.type === selectedShip.type);
-            const isFirstPlacement = ship.cells.length === 0;
-
             placeShipOnBoard(pBoard, selectedShip.type, selectedShip.size, col, row, "player-board", direction);
             updateBoardVisuals(selectedShip.type, selectedShip.size, col, row, "player-board");
-
             const shipElement = document.querySelector(`.ship-container[data-ship="${selectedShip.type}"]`);
             if (!shipElement.onBoard) {
                 shipsOnBoard += 1; // Increment shipsOnBoard count only for the first placement
-                console.log(`Ship placed: ${selectedShip.type}, Ships on board: ${shipsOnBoard}`);
                 shipElement.onBoard = true;
             };
         } else {
@@ -514,7 +605,7 @@ function handleDragStartFromBoard(event) {
 
         selectedShip = { ...ship, direction };
     }
-}
+};
 
 function addBoardEventListeners() {
     const playerBoard = document.querySelector("#player-board .game-board");
@@ -524,7 +615,7 @@ function addBoardEventListeners() {
     });
 
     playerBoard.addEventListener("drop", handleDrop);
-}
+};
 
 function updateBoardVisuals(type, size, col, row, boardId) {
     const board = document.querySelector(`#${boardId} .game-board`);
@@ -539,7 +630,7 @@ function updateBoardVisuals(type, size, col, row, boardId) {
             cell.style.backgroundColor = ship?.color || "Gray";
         }
     }
-}
+};
 
 // Initialize the game
 init();
