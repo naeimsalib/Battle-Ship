@@ -42,7 +42,7 @@ html, body {
     background-color: lightblue; /* Sets background color */
 }
 
-.turn-indicator{
+.turn-indicator {
     color: white;
     font-size: 50px;
 }
@@ -50,7 +50,6 @@ html, body {
 /* Ship Container Styles */
 .ship-container {
     display: flex;
-    grid-template-columns: repeat(var(--size)); /* Match the number of cells */
     padding: 0; /* Remove internal padding */
     margin: 0; /* Remove external margins */
     visibility: visible;
@@ -67,16 +66,6 @@ html, body {
     box-sizing: border-box; /* Ensures padding/border don't increase size */
 }
 
-/* Computer Board Ship Visibility */
-.computer-visible .cell.ship-cell {
-    background-color: lightgray; /* Visible for testing */
-}
-
-.computer-hidden .cell.ship-cell {
-    background-color: rgb(3, 16, 20); /* Same as empty cells */
-}
-
-
 /* Button Styles */
 .start-btn {
     padding: 10px 20px; /* Adds internal spacing */
@@ -84,12 +73,13 @@ html, body {
     cursor: pointer; /* Changes cursor on hover */
 }
 
-.flip-btn{
+.flip-btn {
     padding: 10px 20px; /* Adds internal spacing */
     border-radius: 15px;
     font-size: 1rem; /* Sets button font size */
     cursor: pointer; /* Changes cursor on hover */
 }
+
 .play-btn {
     padding: 10px 20px; /* Adds internal spacing */
     border-radius: 15px;
@@ -105,8 +95,9 @@ html, body {
     align-items: center; /* Centers boards horizontally */
     width: 90%; /* Restricts area width */
 }
+
 /* Ships carrier Container Styles */
-.ships-carrier{
+.ships-carrier {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -116,28 +107,21 @@ html, body {
     border-radius: 10px; /* Rounds corners */
 }
 
-.ship-Hide{
+.ship-Hide {
     visibility: hidden;
 }
 
-.Player-side{
+.Player-side {
     display: flex;
-    align-items:stretch;
+    align-items: stretch;
 }
+
 /* Board Container Styles */
 .board-container {
     padding: 10px; /* Adds internal spacing */
     background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
     border-radius: 10px; /* Rounds corners */
     text-align: center; /* Centers text inside container */
-}
-
-/* Divider Styles */
-.divider {
-    width: 80%; /* Sets divider width */
-    max-width: 30%; /* Restricts maximum divider width */
-    border-top: 10px solid grey; /* Adds a thick top border */
-    margin: 20px 0; /* Adds vertical spacing */
 }
 
 /* Game Board Styles */
