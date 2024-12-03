@@ -37,9 +37,11 @@ html, body {
 /* Title Styles */
 .welcome-title {
     text-align: center; /* Centers the title text */
+    font-size: 40px;
     padding: 10px; /* Adds space around text */
     border-radius: 20px; /* Rounds title background */
     background-color: lightblue; /* Sets background color */
+    animation: fadeInScaleUp 2s ease-in-out infinite; /* Apply the animation */
 }
 
 .roboto-mono-title {
@@ -51,8 +53,6 @@ html, body {
 
 .turn-indicator {
     color: rgb(196, 149, 149);
-    border: 1px solid rgb(253, 253, 253);
-    padding: 1px;
     margin: 10px;
     font-family: "Roboto Mono", monospace;
     font-size: 50px;
@@ -154,6 +154,34 @@ html, body {
 /* Hidden Class */
 .hidden {
     display: none; /* Hides elements */
+}
+
+/* Title Animation */
+@keyframes fadeInScaleUp {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Title Animation */
+@keyframes fadeInScaleUp {
+    0% {
+        opacity: 5;
+        transform: scale(0.5);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 5;
+        transform: scale(0.5);
+    }
 }
 
 /* Responsive Styles */

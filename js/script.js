@@ -373,7 +373,7 @@ function updateTurnIndicator() {
         isComputerTurn = true; // It's the computer's turn
         setTimeout(computerTurn, 1000); // Give a slight delay before the computer makes a move
     } else {
-        turnIndicator.textContent = " ";
+        turnIndicator.textContent = "Battleship Blitz";
     }
     turn = turn === 1 ? -1 : 1; // Switch turns
 }
