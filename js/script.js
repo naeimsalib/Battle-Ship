@@ -10,7 +10,7 @@ const flipButton = document.querySelector(".flip-btn");
 const playButton = document.querySelector(".play-btn");
 
 /*----- State Variables -----*/
-let pBoard, aiBoard, pShips, aiShips, angle, lastPlacedShip, turn, lastMovedShip, direction, selectedShip = null, draggingFromBoard;
+let pBoard, aiBoard, pShips, aiShips, angle, lastPlacedShip, turn, lastMovedShip, direction, selectedShip, draggingFromBoard, shipsOnBoard;
 
 /*----- Event Listeners -----*/
 startBtn.addEventListener("click", startGame);
@@ -33,7 +33,9 @@ function init() {
     angle = 0;
     direction = null;
     lastMovedShip = null;
+    selectedShip = null
     turn = 1;
+    shipsOnBoard = 0;
     lastPlacedShip = {
         type: null,
         size: null,
@@ -70,9 +72,12 @@ function render() {
  */
 function createGrid() {
     return Array.from({ length: 10 }, () => Array(10).fill("Empty"));
-}
+};
+
+
 function playButtonHandler() {
-    if (pShips.some(ship => ship.cells.length === 0)) {
+    console.log(shipsOnBoard);
+    if (shipsOnBoard !== 5) {
         alert("Place all ships on the board before playing!");
         return;
     }
@@ -295,6 +300,8 @@ function handleDrop(e) {
         if (isValidPlacement(pBoard, selectedShip.size, col, row, direction)) {
             placeShipOnBoard(pBoard, selectedShip.type, selectedShip.size, col, row, "player-board", direction);
             updateBoardVisuals(selectedShip.type, selectedShip.size, col, row, "player-board");
+               // Adds 1 to the shipsOnBoard Count
+                shipsOnBoard += 1;
         } else {
             alert("Invalid placement!");
         }
@@ -302,6 +309,8 @@ function handleDrop(e) {
 
     // Reset selectedShip after drop
     selectedShip = null;
+
+ 
 };
 
 /**
@@ -425,7 +434,7 @@ function placeShipOnBoard(board, shipType, size, col, row, boardId, direction = 
             shipElement.classList.add("ship-Hide");
         }
     }
-}
+};
 
 function handleDragStartFromBoard(event) {
     const shipType = event.target.dataset.shipType;
