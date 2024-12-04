@@ -30,8 +30,6 @@ let reverseDirection = false; // Track if the computer should reverse direction
 startBtn.addEventListener("click", startGame);
 flipButton.addEventListener("click", flip);
 playButton.addEventListener("click", playButtonHandler);
-// pauseButton.addEventListener("click", pauseGame);
-// soundButton.addEventListener("click", soundOnAndOff);
 
 /*----- Functions -----*/
 
