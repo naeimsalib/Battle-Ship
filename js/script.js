@@ -380,11 +380,15 @@ function updateTurnIndicator() {
 
 function gameOverCheck() {
     if (aiCount === 0) {
-        alert("Player Wins!");
-        location.reload();
+        setTimeout(() => {
+            alert("Player Wins!");
+            location.reload();
+        }, 2000); // 2-second delay
     } else if (pCount === 0) {
-        alert("Computer Wins!");
-        location.reload();
+        setTimeout(() => {
+            alert("Computer Wins!");
+            location.reload();
+        }, 2000); // 2-second delay
     }
 };
 
@@ -400,10 +404,13 @@ function handleCellClick(cell, boardId) {
     const row = parseInt(cell.dataset.row, 10);
     const playerBoard = boardId === "player-board" ? pBoard : aiBoard;
 
+    // Prevent hitting cells that are already marked as "miss" or "hit"
+    if (playerBoard[row][col] === "miss" || playerBoard[row][col] === "hit") return;
+
     if (playerBoard[row][col] === "Empty") {
         cell.style.backgroundColor = "DeepSkyBlue";
         playerBoard[row][col] = "miss";
-    } else if (playerBoard[row][col] !== "miss" && playerBoard[row][col] !== "hit") {
+    } else {
         cell.style.backgroundColor = "red";
         playerBoard[row][col] = "hit";
         boardId === "player-board" ? pCount-- : aiCount--;
@@ -412,7 +419,7 @@ function handleCellClick(cell, boardId) {
 
     // Switch turns
     updateTurnIndicator();
-}
+};
 
 /**
  * Handles drag start event
