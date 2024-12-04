@@ -115,6 +115,40 @@ html, body {
     width: 100%; /* Ensures the game area takes up the full viewport width */
 }
 
+/* Pause Menu Styles */
+.pause-menu {
+    border: 1px solid blue; /* Adds a border for debugging */
+    border-radius: 50px; /* Rounds corners */
+    height: 50vh; /* Sets menu height */
+    width: 50vh; /* Sets menu width */
+    background-color: lightblue; /* Sets menu background */
+    display: flex; /* Flexbox layout */
+    flex-direction: column; /* Stacks children vertically */
+    justify-content: center; /* Centers children vertically */
+    align-items: center; /* Centers children horizontally */
+    position: absolute; /* Positions menu relative to the page */
+    top: 50%; /* Centers vertically */
+    left: 50%; /* Centers horizontally */
+    transform: translate(-50%, -50%); /* Adjusts for menu dimensions */
+    transition: transform 1s ease-in-out; /* Smooth transition for transform */
+    z-index: 1001; /* Ensure it stays on top of other elements */
+}
+
+.pause-title {
+    text-align: center; /* Centers the title text */
+    font-size: 40px;
+    padding: 10px; /* Adds space around text */
+    border-radius: 20px; /* Rounds title background */
+    background-color: lightblue; /* Sets background color */
+}
+
+.resume-btn {
+    padding: 10px 20px; /* Adds internal spacing */
+    font-size: 1rem; /* Sets button font size */
+    cursor: pointer; /* Changes cursor on hover */
+    border-radius: 15px; /* Rounds button corners */
+}
+
 .extra-buttons {
     position: fixed; /* Fixes the position relative to the viewport */
     top: 10px; /* Adjust the top position as needed */

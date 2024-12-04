@@ -6,7 +6,9 @@ const shipsCarrier = document.querySelector(".ships-carrier");
 const turnIndicator = document.querySelector(".turn-indicator");
 const flipButton = document.querySelector(".flip-btn");
 const playButton = document.querySelector(".play-btn");
-const pauseButton = document.querySelector(".pause-btn");
+const pauseMenu = document.querySelector(".pause-menu");
+const pauseButton = document.querySelector(".pause-button");
+const resumeBtn = document.querySelector(".resume-btn");
 const soundButton = document.querySelector(".sound-btn");
 
 const buttonsAudio = new Audio("Assets/Audio/buttonsSound.mp3");
@@ -30,6 +32,8 @@ let canPlayerMove;
 startBtn.addEventListener("click", startGame);
 flipButton.addEventListener("click", flip);
 playButton.addEventListener("click", playButtonHandler);
+pauseButton.addEventListener("click", pauseGame);
+resumeBtn.addEventListener("click", resumeGame);
 
 /*----- Functions -----*/
 
@@ -706,6 +710,31 @@ function updateBoardVisuals(type, size, col, row, boardId) {
         }
     }
 };
+
+function pauseGame() {
+    buttonsAudio.currentTime = 0; // Reset the audio to the start
+    buttonsAudio.play();
+    setTimeout(() => {
+        buttonsAudio.pause(); // Pause the audio after 0.8 seconds
+    }, 800);
+
+    gameStarted = false; // Pause the game
+    pauseMenu.classList.remove("hidden");
+    gameArea.classList.add("hidden");
+};
+
+function resumeGame() {
+    buttonsAudio.currentTime = 0; // Reset the audio to the start
+    buttonsAudio.play();
+    setTimeout(() => {
+        buttonsAudio.pause(); // Pause the audio after 0.8 seconds
+    }, 800);
+    
+    gameStarted = true; // Resume the game
+    pauseMenu.classList.add("hidden");
+    gameArea.classList.remove("hidden");
+};
+
 
 // Initialize the game
 init();
