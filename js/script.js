@@ -9,7 +9,7 @@ const playButton = document.querySelector(".play-btn");
 const pauseMenu = document.querySelector(".pause-menu");
 const pauseButton = document.querySelector(".pause-button");
 const resumeBtn = document.querySelector(".resume-btn");
-const soundButton = document.querySelector(".sound-btn");
+const soundButton = document.getElementById("sound-button");
 
 const buttonsAudio = new Audio("Assets/Audio/buttonsSound.mp3");
 const playerLoses = new Audio("Assets/Audio/player-loses.mp3");
@@ -17,6 +17,7 @@ const playerWins = new Audio("Assets/Audio/player-wins.mp3");
 const hitAudio = new Audio("Assets/Audio/hitAudio.mp3");
 const missedAudio = new Audio("Assets/Audio/missedAudio.mp3");
 const startBattleAudio = new Audio("Assets/Audio/startBattleAudio.mp3");
+
 
 /*----- State Variables -----*/
 let pBoard, aiBoard, pShips, aiShips, lastPlacedShip, turn, direction, selectedShip, shipsOnBoard;
@@ -27,13 +28,16 @@ let lastComputerHit; // Track the last hit made by the computer
 let computerHitDirection; // Track the direction of the hits (Horizontal or Vertical)
 let computerHits; // Track all hits made by the computer on the same ship
 let reverseDirection;// Track if the computer should reverse direction
-let canPlayerMove;
+let canPlayerMove = true; // Flag to track if the player can make a move
+let isSoundOn;
+
 /*----- Event Listeners -----*/
 startBtn.addEventListener("click", startGame);
 flipButton.addEventListener("click", flip);
 playButton.addEventListener("click", playButtonHandler);
 pauseButton.addEventListener("click", pauseGame);
 resumeBtn.addEventListener("click", resumeGame);
+soundButton.addEventListener("click", toggleSound);
 
 /*----- Functions -----*/
 
@@ -42,19 +46,16 @@ resumeBtn.addEventListener("click", resumeGame);
  */
 function init() {
     gameStarted = false;
-    gameStarted = false;
-    computerHitDirection = null;
-    lastComputerHit = null;
-    computerHits = [];
-    canPlayerMove = true;
     isComputerTurn = false;
     lastComputerHit = null;
     computerHitDirection = null;
+    canPlayerMove = true;
+    isSoundOn = true;
     computerHits = [];
     aiCount = 17;
     pCount = 17;
     direction = null;
-    selectedShip = null
+    selectedShip = null;
     turn = 0;
     shipsOnBoard = 0;
     lastPlacedShip = {
@@ -64,16 +65,15 @@ function init() {
         startRow: null,
         direction: null,
     };
-    selectedShip = null;
 
     pBoard = createGrid();
     aiBoard = createGrid();
 
     pShips = createShips();
-    aiShips = [];
+    aiShips = []; // Initialize the AI ships array
 
     render();
-    renderAiAShips();
+    renderAiAShips(); // Place AI ships without affecting player's board
     addBoardEventListeners();
 };
 
@@ -463,6 +463,12 @@ function handleCellClick(cell, boardId) {
         gameOverCheck();
     }
 
+    // Prevent player from clicking too quickly
+    canPlayerMove = false;
+    setTimeout(() => {
+        canPlayerMove = true;
+    }, 1500);
+
     // Switch turns
     updateTurnIndicator();
 };
@@ -733,6 +739,27 @@ function resumeGame() {
     gameStarted = true; // Resume the game
     pauseMenu.classList.add("hidden");
     gameArea.classList.remove("hidden");
+};
+
+function toggleSound() {
+    isSoundOn = !isSoundOn;
+    soundButton.classList.toggle("muted", !isSoundOn);
+
+    if (!isSoundOn) {
+        buttonsAudio.muted = true;
+        playerLoses.muted = true;
+        playerWins.muted = true;
+        hitAudio.muted = true;
+        missedAudio.muted = true;
+        startBattleAudio.muted = true;
+    } else {
+        buttonsAudio.muted = false;
+        playerLoses.muted = false;
+        playerWins.muted = false;
+        hitAudio.muted = false;
+        missedAudio.muted = false;
+        startBattleAudio.muted = false;
+    }
 };
 
 

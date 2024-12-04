@@ -34,6 +34,21 @@ html, body {
     transform: translate(-310%, -50%); /* Moves menu off-screen */
 }
 
+.sound-button.muted {
+    position: relative;
+}
+
+.sound-button.muted::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background-color: red;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
 /* Title Styles */
 .welcome-title {
     text-align: center; /* Centers the title text */
