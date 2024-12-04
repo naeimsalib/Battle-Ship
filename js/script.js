@@ -10,7 +10,7 @@ const pauseButton = document.querySelector(".pause-btn");
 const soundButton = document.querySelector(".sound-btn");
 
 const buttonsAudio = new Audio("Assets/Audio/buttonsSound.mp3");
-const playerLoses = new Audio("Assets/Audio/game-over.mp3");
+const playerLoses = new Audio("Assets/Audio/player-loses.mp3");
 const playerWins = new Audio("Assets/Audio/player-wins.mp3");
 const hitAudio = new Audio("Assets/Audio/hitAudio.mp3");
 const missedAudio = new Audio("Assets/Audio/missedAudio.mp3");
