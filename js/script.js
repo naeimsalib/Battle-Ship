@@ -21,11 +21,11 @@ let pBoard, aiBoard, pShips, aiShips, lastPlacedShip, turn, direction, selectedS
 let aiCount, pCount; // Tracks the count of cells of ships there is to determine win and loss
 let isComputerTurn; // Tracks who's turn it is so player cannot hit until the computer has played.
 let gameStarted; // Tracks if the game started or not
-let lastComputerHit = null; // Track the last hit made by the computer
-let computerHitDirection = null; // Track the direction of the hits (Horizontal or Vertical)
-let computerHits = []; // Track all hits made by the computer on the same ship
-let reverseDirection = false; // Track if the computer should reverse direction
-
+let lastComputerHit; // Track the last hit made by the computer
+let computerHitDirection; // Track the direction of the hits (Horizontal or Vertical)
+let computerHits; // Track all hits made by the computer on the same ship
+let reverseDirection;// Track if the computer should reverse direction
+let canPlayerMove;
 /*----- Event Listeners -----*/
 startBtn.addEventListener("click", startGame);
 flipButton.addEventListener("click", flip);
@@ -38,6 +38,11 @@ playButton.addEventListener("click", playButtonHandler);
  */
 function init() {
     gameStarted = false;
+    gameStarted = false;
+    computerHitDirection = null;
+    lastComputerHit = null;
+    computerHits = [];
+    canPlayerMove = true;
     isComputerTurn = false;
     lastComputerHit = null;
     computerHitDirection = null;
@@ -270,7 +275,7 @@ function computerTurn() {
         pBoard[row][col] = "hit";
         hitAudio.play(); // Play the hit audio
         pCount--;
-    
+
         // Track the hit
         lastComputerHit = { col, row };
         computerHits.push({ col, row });
@@ -392,15 +397,20 @@ function updateTurnIndicator() {
     if (turn === 1) {
         turnIndicator.textContent = "Player's Turn";
         isComputerTurn = false; // It's the player's turn
+        canPlayerMove = true; // Allow the player to make a move
     } else if (turn === -1) {
         turnIndicator.textContent = "Computer's Turn";
         isComputerTurn = true; // It's the computer's turn
-        setTimeout(computerTurn, 1500); // Give a slight delay before the computer makes a move
+        canPlayerMove = false; // Prevent the player from making a move
+        setTimeout(() => {
+            computerTurn();
+            canPlayerMove = true; // Allow the player to make a move after the computer's turn
+        }, 1500); // Give a slight delay before the computer makes a move
     } else {
         turnIndicator.textContent = "Battleship Blitz";
     }
     turn = turn === 1 ? -1 : 1; // Switch turns
-}
+};
 
 function gameOverCheck() {
     if (aiCount === 0) {
@@ -427,7 +437,7 @@ function gameOverCheck() {
  */
 function handleCellClick(cell, boardId) {
     if (!gameStarted) return; // Prevent any moves before the game starts
-    if (isComputerTurn) return; // Prevent the player from making a move during the computer's turn
+    if (isComputerTurn || !canPlayerMove) return; // Prevent the player from making a move during the computer's turn or if not allowed
     if (boardId === "player-board") return; // Prevent the player from hitting their own cells
 
     const col = parseInt(cell.dataset.col, 10);

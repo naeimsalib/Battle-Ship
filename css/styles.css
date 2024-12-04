@@ -7,7 +7,7 @@
 
 /* Global Page Styles */
 html, body {
-    height: 60%; /* Ensures the page takes up the full viewport height */
+    height: 100%; /* Ensures the page takes up the full viewport height */
     font-family: 'Arial', sans-serif; /* Sets global font */
     background: linear-gradient(105deg, #233d71, #190c08); /* Adds background gradient */
 }
@@ -109,7 +109,10 @@ html, body {
     flex-direction: column; /* Stacks boards vertically */
     justify-content: center; /* Centers boards vertically */
     align-items: center; /* Centers boards horizontally */
-    width: 90%; /* Restricts area width */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 100%; /* Ensures the game area takes up the full viewport height */
+    width: 100%; /* Ensures the game area takes up the full viewport width */
 }
 
 .extra-buttons {
@@ -170,6 +173,7 @@ html, body {
     background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
     border-radius: 10px; /* Rounds corners */
     text-align: center; /* Centers text inside container */
+    flex: 1; /* Allows the board container to grow and fill available space */
 }
 
 /* Game Board Styles */
