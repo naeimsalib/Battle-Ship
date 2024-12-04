@@ -8,6 +8,12 @@ const flipButton = document.querySelector(".flip-btn");
 const playButton = document.querySelector(".play-btn");
 const pauseButton = document.querySelector(".pause-btn");
 const soundButton = document.querySelector(".sound-btn");
+const buttonsAudio = new Audio("../Assets/Audio/buttonsSound.mp3");
+const playerLoses = new Audio("../Assets/Audio/player-loses.mp3");
+const playerWins = new Audio("../Assets/Audio/player-wins.mp3");
+const hitAudio = new Audio("../Assets/Audio/hitAudio.mp3");
+const missedAudio = new Audio("../Assets/Audio/missedAudio.mp3");
+
 
 /*----- State Variables -----*/
 let pBoard, aiBoard, pShips, aiShips, lastPlacedShip, turn, direction, selectedShip, shipsOnBoard;
@@ -23,8 +29,9 @@ let reverseDirection = false; // Track if the computer should reverse direction
 startBtn.addEventListener("click", startGame);
 flipButton.addEventListener("click", flip);
 playButton.addEventListener("click", playButtonHandler);
-pauseButton.addEventListener("click", () => pauseGame);
-soundButton.addEventListener("click", () => soundOnAndOff);
+// pauseButton.addEventListener("click", pauseGame);
+// soundButton.addEventListener("click", soundOnAndOff);
+
 /*----- Functions -----*/
 
 /**
@@ -79,14 +86,6 @@ function createGrid() {
     return Array.from({ length: 10 }, () => Array(10).fill("Empty"));
 };
 
-function pauseGame() {
-
-};
-
-function soundOnAndOff (){
-
-};
-
 /*
     * Handles the play button click event
 */
@@ -95,6 +94,12 @@ function playButtonHandler() {
         alert("Place all ships on the board before playing!");
         return;
     }
+
+    buttonsAudio.currentTime = 0; // Reset the audio to the start
+    buttonsAudio.play();
+    setTimeout(() => {
+        buttonsAudio.pause(); // Pause the audio after 0.8 seconds
+    }, 800);
 
     // Hide the ships carrier
     shipsCarrier.classList.add("hidden");
@@ -259,12 +264,14 @@ function computerTurn() {
     if (pBoard[row][col] === "Empty") {
         cell.style.backgroundColor = "DeepSkyBlue";
         pBoard[row][col] = "miss";
+        missedAudio.play(); // Play the missed audio
         reverseDirection = true; // Reverse direction on miss
     } else {
         cell.style.backgroundColor = "red";
         pBoard[row][col] = "hit";
+        hitAudio.play(); // Play the hit audio
         pCount--;
-
+    
         // Track the hit
         lastComputerHit = { col, row };
         computerHits.push({ col, row });
@@ -322,6 +329,12 @@ function createShips() {
  * Starts the game by hiding the main menu and showing the game area
  */
 function startGame() {
+    buttonsAudio.currentTime = 0; // Reset the audio to the start
+    buttonsAudio.play();
+    setTimeout(() => {
+        buttonsAudio.pause(); // Pause the audio after 0.8 seconds
+    }, 800);
+
     mainMenu.classList.add("move-left");
     gameArea.classList.remove("hidden");
 }
@@ -383,7 +396,7 @@ function updateTurnIndicator() {
     } else if (turn === -1) {
         turnIndicator.textContent = "Computer's Turn";
         isComputerTurn = true; // It's the computer's turn
-        setTimeout(computerTurn, 1000); // Give a slight delay before the computer makes a move
+        setTimeout(computerTurn, 1500); // Give a slight delay before the computer makes a move
     } else {
         turnIndicator.textContent = "Battleship Blitz";
     }
@@ -393,14 +406,20 @@ function updateTurnIndicator() {
 function gameOverCheck() {
     if (aiCount === 0) {
         setTimeout(() => {
-            alert("Player Wins!");
-            location.reload();
-        }, 2000); // 2-second delay
+            playerWins.play(); // Play the player wins sound
+            setTimeout(() => {
+                alert("Player Wins!");
+                location.reload();
+            }, 2000); // 2-second delay
+        }, 0);
     } else if (pCount === 0) {
         setTimeout(() => {
-            alert("Computer Wins!");
-            location.reload();
-        }, 2000); // 2-second delay
+            playerLoses.play(); // Play the player loses sound
+            setTimeout(() => {
+                alert("Computer Wins!");
+                location.reload();
+            }, 2000); // 2-second delay
+        }, 0);
     }
 };
 
@@ -422,9 +441,11 @@ function handleCellClick(cell, boardId) {
     if (playerBoard[row][col] === "Empty") {
         cell.style.backgroundColor = "DeepSkyBlue";
         playerBoard[row][col] = "miss";
+        missedAudio.play();
     } else {
         cell.style.backgroundColor = "red";
         playerBoard[row][col] = "hit";
+        hitAudio.play();
         boardId === "player-board" ? pCount-- : aiCount--;
         gameOverCheck();
     }
@@ -477,6 +498,12 @@ function handleDragOver(event) {
  * Handles drop event
  */
 function handleDrop(e) {
+    buttonsAudio.currentTime = 0; // Reset the audio to the start
+    buttonsAudio.play();
+    setTimeout(() => {
+        buttonsAudio.pause(); // Pause the audio after 0.8 seconds
+    }, 800);
+
     e.preventDefault();
     const cell = e.target;
     const col = parseInt(cell.dataset.col, 10);
@@ -509,6 +536,13 @@ function flip() {
         alert("No ship to flip. Place a ship on the board first.");
         return;
     }
+
+    buttonsAudio.currentTime = 0; // Reset the audio to the start
+    buttonsAudio.play();
+    setTimeout(() => {
+        buttonsAudio.pause(); // Pause the audio after 0.8 seconds
+    }, 800);
+
 
     const { startCol, startRow, size, direction } = lastPlacedShip;
 
