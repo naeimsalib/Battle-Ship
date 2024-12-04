@@ -6,6 +6,8 @@ const shipsCarrier = document.querySelector(".ships-carrier");
 const turnIndicator = document.querySelector(".turn-indicator");
 const flipButton = document.querySelector(".flip-btn");
 const playButton = document.querySelector(".play-btn");
+const pauseButton = document.querySelector(".pause-btn");
+const soundButton = document.querySelector(".sound-btn");
 
 /*----- State Variables -----*/
 let pBoard, aiBoard, pShips, aiShips, lastPlacedShip, turn, direction, selectedShip, shipsOnBoard;
@@ -21,6 +23,8 @@ let reverseDirection = false; // Track if the computer should reverse direction
 startBtn.addEventListener("click", startGame);
 flipButton.addEventListener("click", flip);
 playButton.addEventListener("click", playButtonHandler);
+pauseButton.addEventListener("click", () => pauseGame);
+soundButton.addEventListener("click", () => soundOnAndOff);
 /*----- Functions -----*/
 
 /**
@@ -73,6 +77,14 @@ function render() {
  */
 function createGrid() {
     return Array.from({ length: 10 }, () => Array(10).fill("Empty"));
+};
+
+function pauseGame() {
+
+};
+
+function soundOnAndOff (){
+
 };
 
 /*
