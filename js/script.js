@@ -559,7 +559,8 @@ function placeShipOnBoard(board, shipType, size, col, row, boardId, direction = 
         if (boardId === "player-board") {
             const cell = document.querySelector(`#${boardId}-c${currentCol}r${currentRow}`);
             if (cell) {
-                cell.classList.add("ship-cell");
+                cell.classList.remove("ship-cell");
+                cell.classList.add("ship-cell-On-Board");
                 cell.style.backgroundColor = ship?.color || "Gray";
                 cell.setAttribute("draggable", "true");
                 cell.dataset.shipType = shipType;
