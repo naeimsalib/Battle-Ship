@@ -15,6 +15,12 @@ const hitAudio = new Audio("/Assets/Audio/hitAudio.mp3");
 const missedAudio = new Audio("/Assets/Audio/missedAudio.mp3");
 const startBattleAudio = new Audio("/Assets/Audio/startBattleAudio.mp3");
 
+console.log(buttonsAudio);
+console.log(playerLoses);
+console.log(playerWins);
+console.log(hitAudio);
+console.log(missedAudio);
+console.log(startBattleAudio);
 
 /*----- State Variables -----*/
 let pBoard, aiBoard, pShips, aiShips, lastPlacedShip, turn, direction, selectedShip, shipsOnBoard;
