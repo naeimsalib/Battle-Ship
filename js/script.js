@@ -13,6 +13,7 @@ const playerLoses = new Audio("../Assets/Audio/player-loses.mp3");
 const playerWins = new Audio("../Assets/Audio/player-wins.mp3");
 const hitAudio = new Audio("../Assets/Audio/hitAudio.mp3");
 const missedAudio = new Audio("../Assets/Audio/missedAudio.mp3");
+const startBattleAudio = new Audio("../Assets/Audio/startBattleAudio.mp3");
 
 
 /*----- State Variables -----*/
@@ -95,11 +96,11 @@ function playButtonHandler() {
         return;
     }
 
-    buttonsAudio.currentTime = 0; // Reset the audio to the start
-    buttonsAudio.play();
+    startBattleAudio.currentTime = 0; // Reset the audio to the start
+    startBattleAudio.play();
     setTimeout(() => {
-        buttonsAudio.pause(); // Pause the audio after 0.8 seconds
-    }, 800);
+        startBattleAudio.pause(); // Pause the audio after 0.8 seconds
+    }, 3500);
 
     // Hide the ships carrier
     shipsCarrier.classList.add("hidden");
