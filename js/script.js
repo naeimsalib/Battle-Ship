@@ -16,14 +16,6 @@ const hitAudio = new Audio("Assets/Audio/hitAudio.mp3");
 const missedAudio = new Audio("Assets/Audio/missedAudio.mp3");
 const startBattleAudio = new Audio("Assets/Audio/startBattleAudio.mp3");
 
-// Debugging: Check if audio files are loaded
-console.log(buttonsAudio);
-console.log(playerLoses);
-console.log(playerWins);
-console.log(hitAudio);
-console.log(missedAudio);
-console.log(startBattleAudio);
-
 /*----- State Variables -----*/
 let pBoard, aiBoard, pShips, aiShips, lastPlacedShip, turn, direction, selectedShip, shipsOnBoard;
 let aiCount, pCount; // Tracks the count of cells of ships there is to determine win and loss
