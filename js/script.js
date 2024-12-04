@@ -425,14 +425,34 @@ function handleDragStart(event) {
         type: shipType,
         size: shipSize,
     };
-}
+
+    // Find the ship's color
+    const ship = pShips.find(s => s.type === shipType);
+    const shipColor = ship ? ship.color : "rgba(0, 0, 0, 0.5)"; // Default to semi-transparent black if color not found
+
+    // Create a custom drag image
+    const dragImage = document.createElement("div");
+    dragImage.style.width = `${shipSize * 40}px`; // Adjust the width based on the ship size
+    dragImage.style.height = "40px"; // Fixed height for the ship cell
+    dragImage.style.backgroundColor = shipColor; // Use the ship's color
+    dragImage.style.borderRadius = "5px"; // Match the border radius of the ship cell
+    document.body.appendChild(dragImage);
+
+    // Set the custom drag image
+    event.dataTransfer.setDragImage(dragImage, 0, 0);
+
+    // Remove the custom drag image after a short delay
+    setTimeout(() => {
+        document.body.removeChild(dragImage);
+    }, 0);
+};
 
 /**
  * Handles drag over event
  */
 function handleDragOver(event) {
     event.preventDefault();
-}
+};
 
 /**
  * Handles drop event
