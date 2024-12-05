@@ -268,29 +268,38 @@ function computerTurn() {
     }
 
     const cell = document.querySelector(`#player-board-c${col}r${row}`);
+    const startCell = document.querySelector(`#computer-board .game-board`);
 
-    if (pBoard[row][col] === "Empty") {
-        cell.style.backgroundColor = "DeepSkyBlue";
-        pBoard[row][col] = "miss";
-        missedAudio.play(); // Play the missed audio
-        reverseDirection = true; // Reverse direction on miss
-    } else {
-        cell.style.backgroundColor = "red";
-        pBoard[row][col] = "hit";
-        hitAudio.play(); // Play the hit audio
-        pCount--;
+    animateRocket(startCell, cell, () => {
+        if (pBoard[row][col] === "Empty") {
+            cell.style.backgroundColor = "DeepSkyBlue";
+            pBoard[row][col] = "miss";
+            setTimeout(() => {
+                missedAudio.play();
+            }, 500); // Delay the sound
+            reverseDirection = true; // Reverse direction on miss
+        } else {
+            cell.style.backgroundColor = "red";
+            pBoard[row][col] = "hit";
+            setTimeout(() => {
+                hitAudio.play();
+            }, 500); // Delay the sound
+            pCount--;
 
-        // Track the hit
-        lastComputerHit = { col, row };
-        computerHits.push({ col, row });
-        reverseDirection = false; // Continue in the same direction on hit
-    }
+            // Track the hit
+            lastComputerHit = { col, row };
+            computerHits.push({ col, row });
+            reverseDirection = false; // Continue in the same direction on hit
+        }
 
-    // Check for game over
-    gameOverCheck();
+        // Check for game over
+        gameOverCheck();
 
-    // Switch turns back to the player
-    updateTurnIndicator();
+        // Switch turns back to the player
+        setTimeout(() => {
+            updateTurnIndicator();
+        }, 1500); // Delay before switching turns back to the player
+    });
 };
 
 /**
@@ -451,26 +460,34 @@ function handleCellClick(cell, boardId) {
     // Prevent hitting cells that are already marked as "miss" or "hit"
     if (playerBoard[row][col] === "miss" || playerBoard[row][col] === "hit") return;
 
-    if (playerBoard[row][col] === "Empty") {
-        cell.style.backgroundColor = "DeepSkyBlue";
-        playerBoard[row][col] = "miss";
-        missedAudio.play();
-    } else {
-        cell.style.backgroundColor = "red";
-        playerBoard[row][col] = "hit";
-        hitAudio.play();
-        boardId === "player-board" ? pCount-- : aiCount--;
-        gameOverCheck();
-    }
+    const startCell = document.querySelector(`#${boardId === "player-board" ? "computer-board" : "player-board"} .game-board`);
 
-    // Prevent player from clicking too quickly
-    canPlayerMove = false;
-    setTimeout(() => {
-        canPlayerMove = true;
-    }, 1500);
+    animateRocket(startCell, cell, () => {
+        if (playerBoard[row][col] === "Empty") {
+            cell.style.backgroundColor = "DeepSkyBlue";
+            playerBoard[row][col] = "miss";
+            setTimeout(() => {
+                missedAudio.play();
+            }, 500); // Delay the sound
+        } else {
+            cell.style.backgroundColor = "red";
+            playerBoard[row][col] = "hit";
+            setTimeout(() => {
+                hitAudio.play();
+            }, 500); // Delay the sound
+            boardId === "player-board" ? pCount-- : aiCount--;
+            gameOverCheck();
+        }
 
-    // Switch turns
-    updateTurnIndicator();
+        // Prevent player from clicking too quickly
+        canPlayerMove = false;
+        setTimeout(() => {
+            canPlayerMove = true;
+        }, 1500);
+
+        // Switch turns
+        updateTurnIndicator();
+    });
 };
 
 /**
@@ -762,6 +779,30 @@ function toggleSound() {
     }
 };
 
+
+function animateRocket(startCell, endCell, callback) {
+    const rocket = document.createElement("div");
+    rocket.classList.add("rocket");
+
+    const startRect = startCell.getBoundingClientRect();
+    const endRect = endCell.getBoundingClientRect();
+
+    const deltaX = endRect.left - startRect.left;
+    const deltaY = endRect.top - startRect.top;
+
+    rocket.style.setProperty("--rocket-x", `${deltaX}px`);
+    rocket.style.setProperty("--rocket-y", `${deltaY}px`);
+
+    document.body.appendChild(rocket);
+
+    rocket.style.left = `${startRect.left}px`;
+    rocket.style.top = `${startRect.top}px`;
+
+    rocket.addEventListener("animationend", () => {
+        document.body.removeChild(rocket);
+        callback();
+    });
+}
 
 // Initialize the game
 init();
