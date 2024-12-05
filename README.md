@@ -1,6 +1,3 @@
-<section id="header">
-  <div align="center" id="header">
-
 # BattleShip Blitz
 
 **Written by [Naeim Salib](https://www.linkedin.com/in/naeimsalib/)**
@@ -52,3 +49,28 @@ BattleShip Blitz is a classic naval warfare game where you command a fleet of sh
 **Naeim Salib** - [LinkedIn](https://www.linkedin.com/in/naeimsalib/)
 
 Enjoy playing BattleShip Blitz and may the best strategist win!
+
+## Play the Game
+
+You can play BattleShip Blitz online at the following link:
+[Play BattleShip Blitz](https://naeimsalib.github.io/Battle-Ship/)
+
+## Deploying the Game on Your Own Machine
+
+To deploy BattleShip Blitz on your own machine, follow these steps:
+
+1. **Clone the Repository**: Clone the repository to your local machine using the following command:
+
+```bash
+git clone https://github.com/naeimsalib/Battle-Ship.git
+```
+
+2. **Navigate to the Project Directory**: Change to the project directory:
+
+```bash
+cd Battle-Ship
+```
+
+3. **Open the Game in Your Browser: Open the index.html file in your preferred web browser:**
+
+### By following these steps, you can play BattleShip Blitz on your own machine.
