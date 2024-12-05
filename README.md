@@ -1,12 +1,13 @@
-# BattleShip Blitz
+<section id="header">
+  <div align="center" id="header">
 
-**Written by [Naeim Salib](https://www.linkedin.com/in/naeimsalib/)**
+  # BattleShip Blitz
 
+  **Written by [Naeim Salib](https://www.linkedin.com/in/naeimsalib/)**
+  <br>
+  Instructional Associate
   </div>
-  
-  <div align="center" id="socialbuttons">
-  </div>
-</section>
+
 
 ## Game Story
 
@@ -70,6 +71,8 @@ git clone https://github.com/naeimsalib/Battle-Ship.git
 ```bash
 cd Battle-Ship
 ```
+
+</section>
 
 3. **Open the Game in Your Browser: Open the index.html file in your preferred web browser:**
 
