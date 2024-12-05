@@ -1,12 +1,15 @@
 <section id="header">
   <div align="center" id="header">
 
-  # BattleShip Blitz
+# BattleShip Blitz
 
-  **Written by [Naeim Salib](https://www.linkedin.com/in/naeimsalib/)**
-  <br>
+**Written by [Naeim Salib](https://www.linkedin.com/in/naeimsalib/)**
+<br>
+<br>
+**Live Game: [BattleShip Blitz](https://naeimsalib.github.io/Battle-Ship/)**
+<br>
+
   </div>
-
 
 ## Game Story
 
