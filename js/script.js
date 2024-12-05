@@ -28,8 +28,9 @@ let lastComputerHit; // Track the last hit made by the computer
 let computerHitDirection; // Track the direction of the hits (Horizontal or Vertical)
 let computerHits; // Track all hits made by the computer on the same ship
 let reverseDirection;// Track if the computer should reverse direction
-let canPlayerMove = true; // Flag to track if the player can make a move
+let canPlayerMove; // Flag to track if the player can make a move
 let isSoundOn;
+let isRocketAnimating;
 
 /*----- Event Listeners -----*/
 startBtn.addEventListener("click", startGame);
@@ -45,6 +46,8 @@ soundButton.addEventListener("click", toggleSound);
  * Initializes the game state
  */
 function init() {
+    isRocketAnimating = false;
+    canPlayerMove = true;
     gameStarted = false;
     isComputerTurn = false;
     lastComputerHit = null;
@@ -781,6 +784,9 @@ function toggleSound() {
 
 
 function animateRocket(startCell, endCell, callback) {
+    if(isRocketAnimating) return;
+
+    isRocketAnimating = true; // Set the flag to indicate a rocket is animating
     const rocket = document.createElement("div");
     const iconSprite = document.createElement("div");
 
@@ -803,10 +809,13 @@ function animateRocket(startCell, endCell, callback) {
     rocket.style.left = `${startRect.left}px`;
     rocket.style.top = `${startRect.top}px`;
 
+        isRocketAnimating = true;
     rocket.addEventListener("animationend", () => {
         document.body.removeChild(rocket);
+        isRocketAnimating = false;
         callback();
     });
+
 };
 
 // Initialize the game
