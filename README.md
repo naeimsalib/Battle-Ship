@@ -5,7 +5,6 @@
 
   **Written by [Naeim Salib](https://www.linkedin.com/in/naeimsalib/)**
   <br>
-  Instructional Associate
   </div>
 
 
