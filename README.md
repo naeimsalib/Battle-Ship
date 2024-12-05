@@ -37,9 +37,16 @@ BattleShip Blitz is a classic naval warfare game where you command a fleet of sh
    - You can also change the position of the position of the last shipped place as many times as you want, but once you move to the next ship it is not movable
 3. **Begin Battle**: Once all ships are placed, click the "Play" button to start the battle.
    ![Start Game](Assets/Images/GamePlayScreenShot.png)
+<<<<<<< HEAD
 4. **Take Turns**: Click on the enemy board to attack. The AI will take its turn after yours, and see the Cool animation of the rocket hitting your target
 5. **Pause and Resume**: Use the pause button to pause the game and the resume button to continue.
 6. **Toggle Sound**: Click the sound button to mute or unmute game sounds.
+=======
+4. **Take Turns**: Click on the enemy board to attack. The AI will take its turn after yours.
+5. **Animated Rockets**: After selecting your targeted cell, a rocket animation will show hitting your target, and the cell will not reveal if it is a hit or miss until the rocket hits it.
+6. **Pause and Resume**: Use the pause button to pause the game and the resume button to continue.
+7. **Toggle Sound**: Click the sound button to mute or unmute game sounds.
+>>>>>>> gh-pages
 
 ## Technologies Used
 
