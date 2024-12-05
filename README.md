@@ -30,16 +30,16 @@ BattleShip Blitz is a classic naval warfare game where you command a fleet of sh
 
    ![Start Game](Assets/Images/Start-Game.png)
 
-3. **Place Your Ships**: Drag and drop your ships onto the player board. Use the flip button to change their orientation.
+2. **Place Your Ships**: Drag and drop your ships onto the player board. Use the flip button to change their orientation.
    ![Start Game](Assets/Images/Main-game.png)
    ![Start Game](Assets/Images/Main-game2.png)
    - You can Use the Flip Button to flip the ships orientation
    - You can also change the position of the position of the last shipped place as many times as you want, but once you move to the next ship it is not movable
-5. **Begin Battle**: Once all ships are placed, click the "Play" button to start the battle.
+3. **Begin Battle**: Once all ships are placed, click the "Play" button to start the battle.
    ![Start Game](Assets/Images/GamePlayScreenShot.png)
-6. **Take Turns**: Click on the enemy board to attack. The AI will take its turn after yours.
-7. **Pause and Resume**: Use the pause button to pause the game and the resume button to continue.
-8. **Toggle Sound**: Click the sound button to mute or unmute game sounds.
+4. **Take Turns**: Click on the enemy board to attack. The AI will take its turn after yours.
+5. **Pause and Resume**: Use the pause button to pause the game and the resume button to continue.
+6. **Toggle Sound**: Click the sound button to mute or unmute game sounds.
 
 ## Technologies Used
 
