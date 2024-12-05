@@ -26,14 +26,10 @@ BattleShip Blitz is a classic naval warfare game where you command a fleet of sh
 1. **Start the Game**: Click the "Start Game" button on the main menu to begin.
 
    ![Start Game](Assets/Images/Start-Game.png)
-   <br />
 
 3. **Place Your Ships**: Drag and drop your ships onto the player board. Use the flip button to change their orientation.
-4. <br />
    ![Start Game](Assets/Images/Main-game.png)
-   <br />
    ![Start Game](Assets/Images/Main-game2.png)
-   <br />
    - You can Use the Flip Button to flip the ships orientation
    - You can also change the position of the position of the last shipped place as many times as you want, but once you move to the next ship it is not movable
 5. **Begin Battle**: Once all ships are placed, click the "Play" button to start the battle.
