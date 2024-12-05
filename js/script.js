@@ -782,7 +782,11 @@ function toggleSound() {
 
 function animateRocket(startCell, endCell, callback) {
     const rocket = document.createElement("div");
-    rocket.classList.add("rocket");
+    const iconSprite = document.createElement("div");
+
+    rocket.classList.add("rocket-move");
+    rocket.appendChild(iconSprite);
+    iconSprite.classList.add("rocket");
 
     const startRect = startCell.getBoundingClientRect();
     const endRect = endCell.getBoundingClientRect();
@@ -792,6 +796,7 @@ function animateRocket(startCell, endCell, callback) {
 
     rocket.style.setProperty("--rocket-x", `${deltaX}px`);
     rocket.style.setProperty("--rocket-y", `${deltaY}px`);
+    iconSprite.style.setProperty("--rocket-angle", `${Math.atan2(deltaY, deltaX)}rad`);
 
     document.body.appendChild(rocket);
 
@@ -802,7 +807,7 @@ function animateRocket(startCell, endCell, callback) {
         document.body.removeChild(rocket);
         callback();
     });
-}
+};
 
 // Initialize the game
 init();

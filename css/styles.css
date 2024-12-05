@@ -5,11 +5,19 @@
     padding: 0; /* Removes default padding */
 }
 
+html {
+    font-size: 16px; /* Sets base font size */
+
+}
 /* Global Page Styles */
-html, body {
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
     height: 100%; /* Ensures the page takes up the full viewport height */
     font-family: 'Arial', sans-serif; /* Sets global font */
-    background: linear-gradient(105deg, #233d71, #190c08); /* Adds background gradient */
+    background: linear-gradient(105deg, #233d71, #190c08);
 }
 
 /* Main Menu Styles */
@@ -284,14 +292,21 @@ html, body {
     }
 }
 
-.rocket {
+
+.rocket-move {
     position: absolute;
-    width: 85px;
-    height: 85px;
-    background: url('../Assets/Images/rocket.png') no-repeat center center;
-    background-size: contain;
+    width: 100px;
+    height: 100px;
     z-index: 1000;
     animation: rocket-move 1s linear forwards;
+}
+
+.rocket {
+    width: 100%;
+    height: 100%;
+    background: url('../Assets/Images/rocket.png') no-repeat center center;
+    background-size: contain;
+    rotate: calc(var(--rocket-angle) + 90deg);
 }
 
 /* Responsive Styles */
