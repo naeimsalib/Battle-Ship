@@ -101,9 +101,9 @@ body {
 }
 
 .cell {
-        margin: 0; /* Remove extra space */
+    margin: 0; /* Remove extra space */
     box-sizing: border-box; /* Ensures padding/border don't increase size */
-    transform-origin: top left; 
+    transform-origin:0 0;
 }
 
 .ship-cell-On-Board {
@@ -301,8 +301,8 @@ body {
 
 .rocket-move {
     position: absolute;
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     z-index: 1000;
     animation: rocket-move 1s linear forwards;
 }
@@ -317,19 +317,101 @@ body {
 
 /* Responsive Styles */
 @media (max-width: 768px) {
-    .game-board {
-        grid-template-columns: repeat(10, 6vmin);
-        grid-template-rows: repeat(10, 6vmin);
-        gap: 1vmin;
-    }
-
     .main-menu {
-        height: 40vh; /* Reduces menu height */
-        width: 40vh; /* Reduces menu width */
+        height: 25vh; /* Further reduces menu height */
+        width: 25vh; /* Further reduces menu width */
     }
 
     .start-btn {
-        padding: 8px 16px; /* Reduces button padding */
-        font-size: 0.9rem; /* Reduces button font size */
+        padding: 4px 8px; /* Further reduces button padding */
+        font-size: 0.7rem; /* Further reduces button font size */
+    }
+
+    .game-board {
+        grid-template-columns: repeat(10, 4vmin); /* Further reduces cell size */
+        grid-template-rows: repeat(10, 4vmin); /* Further reduces cell size */
+        gap: 0.5vmin; /* Reduces gap between cells */
+    }
+
+    .Player-side {
+        flex-direction: column; /* Stack vertically on smaller screens */
+    }
+
+    .board-container {
+        margin-bottom: 5px; /* Further reduces space between boards */
+    }
+
+    .extra-buttons {
+        top: 5px; /* Adjust the top position for smaller screens */
+        right: 5px; /* Adjust the right position for smaller screens */
+    }
+
+    .pause-button, .sound-button {
+        font-size: 10px; /* Further reduce font size for smaller screens */
+        padding: 4px 8px; /* Further reduce padding for smaller screens */
+    }
+
+    .ships-carrier {
+        padding: 5px; /* Reduce internal spacing */
+        width: 70%; /* Further reduce width */
+    }
+
+    .ship-container {
+        margin-bottom: 3px; /* Further reduce space between ships */
+    }
+
+    .ship-cell {
+        width: 25px; /* Further reduce width of ship cells */
+        height: 25px; /* Further reduce height of ship cells */
+    }
+}
+
+@media (max-width: 480px) {
+    .main-menu {
+        height: 20vh; /* Further reduces menu height */
+        width: 20vh; /* Further reduces menu width */
+    }
+
+    .start-btn {
+        padding: 2px 4px; /* Further reduces button padding */
+        font-size: 0.6rem; /* Further reduces button font size */
+    }
+
+    .game-board {
+        grid-template-columns: repeat(10, 3vmin); /* Further reduces cell size */
+        grid-template-rows: repeat(10, 3vmin); /* Further reduces cell size */
+        gap: 0.3vmin; /* Reduces gap between cells */
+    }
+
+    .Player-side {
+        flex-direction: column; /* Stack vertically on smaller screens */
+    }
+
+    .board-container {
+        margin-bottom: 5px; /* Further reduces space between boards */
+    }
+
+    .extra-buttons {
+        top: 5px; /* Adjust the top position for smaller screens */
+        right: 5px; /* Adjust the right position for smaller screens */
+    }
+
+    .pause-button, .sound-button {
+        font-size: 8px; /* Further reduce font size for smaller screens */
+        padding: 2px 4px; /* Further reduce padding for smaller screens */
+    }
+
+    .ships-carrier {
+        padding: 3px; /* Reduce internal spacing */
+        width: 60%; /* Further reduce width */
+    }
+
+    .ship-container {
+        margin-bottom: 2px; /* Further reduce space between ships */
+    }
+
+    .ship-cell {
+        width: 20px; /* Further reduce width of ship cells */
+        height: 20px; /* Further reduce height of ship cells */
     }
 }
